@@ -2,50 +2,50 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ben&#39;s Blog</title>
-    <link>benmack.github.io/</link>
+    <link>https://benmack.github.io/</link>
     <description>Recent content on Ben&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 28 Sep 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="benmack.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://benmack.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Satellite imagery classification - III</title>
-      <link>benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</link>
+      <link>https://benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</link>
       <pubDate>Mon, 06 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</guid>
+      <guid>https://benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</guid>
       <description>Introduction Context and goal This is the third and last part of a blog post series about using remote sensing data to classify the earth&amp;rsquo;s surface. In this post we will finally walk through the typical steps it takes to classify remote sensing images with a supervised classifier to derive a land use/land cover map.
 We will make use of the remote sensing data from the first part of the series and the OpenStreetMap (OSM) data from the second part of the series.</description>
     </item>
     
     <item>
       <title>Satellite imagery classification - II</title>
-      <link>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</link>
+      <link>https://benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</link>
       <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</guid>
+      <guid>https://benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</guid>
       <description>Context and Content This is the second part of a three parts series about using remote sensing data to classify the earth&amp;rsquo;s surface. Please read the first part of the series if you are interested in an introduction to the post series and / or in the first part where we downloaded parts of Landsat scenes by leveraging the Cloud Optimized GeoTIFF format.
 In this part, after a short introduction to OpenStreetMap (OSM), we will download and prepare land use and land cover data sourced from OSM.</description>
     </item>
     
     <item>
       <title>Satellite imagery classification - I</title>
-      <link>benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</link>
+      <link>https://benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</link>
       <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</guid>
+      <guid>https://benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</guid>
       <description>Introduction to the post series Outline This is a three parts series about classification of remote sensing images. Remote sensing images are already beautiful enough to only look at, but they can also be used for mapping the earth&amp;rsquo;s surface. When the task is to map categorical classes, such as forest, water, meadow, farmland, residential area, etc. the task can be solved by classification, often more specifically called land use and/or land cover classification.</description>
     </item>
     
     <item>
       <title>Hi, I am Ben.</title>
-      <link>benmack.github.io/about/</link>
+      <link>https://benmack.github.io/about/</link>
       <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/about/</guid>
+      <guid>https://benmack.github.io/about/</guid>
       <description>My name is Benjamin Mack. I grew up in Swabia in south west Germany.
 I did my aternative service in lieu of military service in Solingen. Then I lived in Bonn for many years, interrupted by one funny ERASMUS year in Granada, Spain. After one year in Karlsruhe I came to Munich where I live ever since.
 I studied in Bonn having the subjects geography, ethnology and economics. In the end I discovered and was facinated by Remote Sensing and Earth Observation.</description>
@@ -53,10 +53,10 @@ I studied in Bonn having the subjects geography, ethnology and economics. In the
     
     <item>
       <title>Projects on GitHub</title>
-      <link>benmack.github.io/projects/</link>
+      <link>https://benmack.github.io/projects/</link>
       <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/projects/</guid>
+      <guid>https://benmack.github.io/projects/</guid>
       <description>Selected projects from my GitHub profile.
 eobox: A Python package for processing earth observation data.
 nasa_hls: A Python package to download data from NASA&amp;rsquo;s Harmonized Landsat and Sentinel-2 project.
@@ -66,19 +66,19 @@ oneClass: An R package for one-class classification which I have developed durin
     
     <item>
       <title>YAY...</title>
-      <link>benmack.github.io/blog/2019-09-28-1_yay/</link>
+      <link>https://benmack.github.io/blog/2019-09-28-1_yay/</link>
       <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/blog/2019-09-28-1_yay/</guid>
+      <guid>https://benmack.github.io/blog/2019-09-28-1_yay/</guid>
       <description>A journey of a thousand miles begins with a single step. - Tao Te Ching</description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>benmack.github.io/contact/</link>
+      <link>https://benmack.github.io/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/contact/</guid>
+      <guid>https://benmack.github.io/contact/</guid>
       <description></description>
     </item>
     

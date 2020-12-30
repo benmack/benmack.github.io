@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Open Street Map on Ben&#39;s Blog</title>
-    <link>benmack.github.io/categories/open-street-map/</link>
+    <link>https://benmack.github.io/categories/open-street-map/</link>
     <description>Recent content in Open Street Map on Ben&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 26 Oct 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="benmack.github.io/categories/open-street-map/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://benmack.github.io/categories/open-street-map/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Satellite imagery classification - II</title>
-      <link>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</link>
+      <link>https://benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</link>
       <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</guid>
+      <guid>https://benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</guid>
       <description>Context and Content This is the second part of a three parts series about using remote sensing data to classify the earth&amp;rsquo;s surface. Please read the first part of the series if you are interested in an introduction to the post series and / or in the first part where we downloaded parts of Landsat scenes by leveraging the Cloud Optimized GeoTIFF format.
 In this part, after a short introduction to OpenStreetMap (OSM), we will download and prepare land use and land cover data sourced from OSM.</description>
     </item>
