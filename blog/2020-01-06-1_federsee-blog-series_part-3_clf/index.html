@@ -1,0 +1,1653 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Satellite imagery classification - III - Ben&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.68.3" /><meta property="og:site_name" content="Ben&#39;s Blog">
+  <meta property="og:title" content="Satellite imagery classification - III">
+  <meta property="og:description" content="Classification with the help of the Python eobox package.">
+  <meta property="description" content="Classification with the help of the Python eobox package.">
+  <meta property="og:url" content="benmack.github.io/benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/">
+  <meta property="og:type" content="article">
+  
+    
+      <meta property="og:image" content="benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png">
+      <meta property="og:image:alt" content="output_30_0.png">
+    
+  
+  <link rel="stylesheet" href="/benmack.github.io/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/benmack.github.io/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/benmack.github.io/" class="nav">
+        
+          Blog
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/benmack.github.io/" class="nav link"><i class='fa fa-home'></i> Home</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/projects/" class="nav link"><i class='far fa-id-card'></i> Projects</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/about/" class="nav link"><i class='far fa-id-card'></i> About</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Satellite%20imagery%20classification%20-%20III&amp;url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f&amp;title=Satellite%20imagery%20classification%20-%20III" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f&amp;title=Satellite%20imagery%20classification%20-%20III" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/benmack.github.io/"><img src="benmack.github.io/img/intro-pic/180929_genova_me.jpg" class="circle" width="100" alt="intro-pic" /></a>
+  <header>
+    <h1>Ben's Blog</h1>
+  </header>
+  <main>
+    <p>... | data | geospatial | python | remote sensing | ...</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/">Satellite imagery classification - III</a></h2>
+    
+    
+      <p>Classification with the help of the Python eobox package.</p>
+    
+  </div>
+  <div class="meta">
+    <time datetime="2020-01-06 00:00:00 &#43;0000 UTC">January 6, 2020</time>
+    
+    <p>20-Minute Read</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Satellite%20imagery%20classification%20-%20III&amp;url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f&amp;title=Satellite%20imagery%20classification%20-%20III" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f&amp;title=Satellite%20imagery%20classification%20-%20III" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=benmack.github.io%2fblog%2f2020-01-06-1_federsee-blog-series_part-3_clf%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      <a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/" class="image" style="--bg-image: url('benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png');">
+    <img src="benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png" alt="output_30_0.png">
+  </a>
+      <h1 id="introduction">Introduction</h1>
+<h2 id="context-and-goal">Context and goal</h2>
+<p>This is the third and last part of a blog post series about using remote sensing data to classify the earth&rsquo;s surface.
+In this post we will finally walk through the typical steps it takes to classify remote sensing images with a supervised classifier to derive a land use/land cover map.</p>
+<p>We will make use of the
+remote sensing data from the <a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">first part of the series</a> and the OpenStreetMap (OSM) data from the <a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/">second part of the series</a>.</p>
+<p>With these ingredients, a machine learning model can learn patterns between feature vectors and their respective target categories.
+Then the model can be used to estimate the target category of other feature vectors for creating the land use/land cover map or for model validation by comparing estimated and known target categories.
+This is the goal of this post.</p>
+<h2 id="processing-steps">Processing steps</h2>
+<p>More specifically, in this post, we will walk through the following steps:</p>
+<ul>
+<li>
+<p>Create a reference dataset. Therefore, we need to extract pixel values of the Landsat raster data where it overlays with the polygons of the OSM vector data. Then, we can create a simple two-dimensional table, or reference dataset, which contains, among other information, the labels (land use/land cover information) and features (raster pixel values).</p>
+</li>
+<li>
+<p>Create a training and test dataset. We will do this by splitting the reference dataset.</p>
+</li>
+<li>
+<p>Train a classification model. We will do this with the training set and a random forest classifier.</p>
+</li>
+<li>
+<p>Validate a classification model. We will do this by comparing the known labels of the test dataset with the labels predicted with the trained model.</p>
+</li>
+<li>
+<p>Predict the image data and derive a map. We will do this by predicting all pixels values of the raster, not only the extracted ones.</p>
+</li>
+</ul>
+<h2 id="eobox"><strong>eobox</strong></h2>
+<p>For the earth observation specific tasks we will use <a href="https://github.com/benmack/eo-box"><strong>eobox</strong></a>, a toolbox for processing earth observation data with Python which I started building for learning and practicing purposes.
+It contains several smaller helpful utilities that might be useful for someone working with remote sensing data in Python.
+However, I believe that it really might be able to make your life easier if you find yourself in the following situation:</p>
+<ul>
+<li>
+<p>You have many large raster files stored as a single-layer GDAL-readable file.</p>
+</li>
+<li>
+<p>The raster files have identical extents, pixel resolution alignment.</p>
+</li>
+<li>
+<p>You want to do pixel-based processing (e.g. over the spectral and/or temporal dimension) and need all pixel values of the whole stack in memory.</p>
+</li>
+<li>
+<p>You want to process the data locally (on your notebook or a server) but the whole stack of the full raster extent does not fit in memory.</p>
+</li>
+<li>
+<p>You do not want to physically split and/or stack the data and you do not want to write boilerplate code to perform chunk-wise processing of the raster stacks.</p>
+</li>
+<li>
+<p>You are patient and okay to wait for more complex processing steps because the package is not optimized for computational performance.</p>
+</li>
+<li>
+<p>The setup and/or learning effort for using another more professional framework is too high and not required for the scope of your problem.</p>
+</li>
+</ul>
+<p>In this post, we are processing a raster dataset that would easily fit in any current standard notebook.
+However, the same code works also on raster datasets (such as the 10,000 by 10,000 pixel Sentinel-2 tiles) that are larger than the computer&rsquo;s memory because internally the computations are done on spatial chunks.
+Without the need of writing a lot of boilerplate code, this enables us to run tasks without such as the creation of temporal statistical metrics, virtual time series by linear temporal interpolation (see <a href="https://eo-box.readthedocs.io/en/develop/examples/raster/eocubescenecollection_from_level2_to_level3_products.html#EOCubeSceneCollection---from-level-2-to-level-3-products"><code>EOCubeSceneCollection</code> - from level-2 to level-3 products</a>), and the prediction of a <strong>sklearn</strong> model on large feature stacks.
+Additionally, it is easy to write custom functions that can be developed with a spatial chunk of the data and then applied over the whole data <a href="https://eo-box.readthedocs.io/en/develop/examples/raster/eocubescenecollection_custom_functions.html#EOCubeSceneCollection---custom-functions"><code>EOCubeSceneCollection</code> - custom functions</a>.</p>
+<p>However, before using and building on the package, it is important to be aware that it is only a small personal free time project.
+It is not as mature, performant, supported, stable, and full of features as many professional and/or community-driven framework out there.
+The following is a non-exhaustive list projects in Python or with a Python API for earth observation data that I find very interesting:</p>
+<ul>
+<li>
+<p><a href="https://github.com/sentinel-hub/eo-learn">eo-learn</a></p>
+</li>
+<li>
+<p><a href="https://github.com/dcs4cop/xcube">xcube</a></p>
+</li>
+<li>
+<p><a href="https://github.com/opendatacube">Open Data Cube</a></p>
+</li>
+<li>
+<p><a href="https://github.com/appelmar/gdalcubes">gdalcubes</a></p>
+</li>
+<li>
+<p><a href="https://rasterframes.io/">RasterFrames</a></p>
+</li>
+<li>
+<p><a href="https://github.com/pangeo-data">Pangeo</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Open-EO">OpenEO</a></p>
+</li>
+<li>
+<p><a href="https://github.com/earthlab/earthpy">EarthPy</a></p>
+</li>
+<li>
+<p><a href="https://github.com/pydata/xarray">xarray</a></p>
+</li>
+</ul>
+<p>Additionally, you might find more interesting links in the <a href="https://github.com/sacridini/Awesome-Geospatial">Awesome Geospatial</a> list of geospatial analysis tools.</p>
+<p>In this landscape of tools, <strong>eobox</strong> might be just fine to solve your problem and, compared to some of these frameworks, it might be easier to get started with it.
+It does not require to set up a database and ingesting or indexing the data (like the <a href="https://github.com/opendatacube">Open Data Cube</a>) or to store the data in <strong>numpy</strong> arrays (like in case of the <a href="https://github.com/sentinel-hub/eo-learn">eo-learn framework</a>).
+<a href="https://github.com/appelmar/gdalcubes">gdalcubes</a> is a very promising project with even more flexibility but it is currently in a very early stage of development and has (so far) only R and not Python bindings.
+But writing a comprehensive analysis of the scope, strengths, and weaknesses of these projects is a very interesting topic but not the scope of this post &ndash; please leave a note in the comments if you are aware of such a comparative analysis.
+Instead, let us now walk through the steps it takes to classify remote sensing images with a supervised classifier to derive a land use/land cover map.</p>
+<h1 id="supervised-classification-of-remote-sensing-data">Supervised classification of remote sensing data</h1>
+<h2 id="libraries">Libraries</h2>
+<p>We will use the following libraries and modules in this post:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> geopandas <span style="color:#f92672">as</span> gpd
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+<span style="color:#f92672">import</span> rasterio
+<span style="color:#f92672">import</span> seaborn <span style="color:#f92672">as</span> sns
+<span style="color:#f92672">from</span> shapely.geometry.polygon <span style="color:#f92672">import</span> Polygon
+<span style="color:#f92672">from</span> shapely.geometry.multipolygon <span style="color:#f92672">import</span> MultiPolygon
+<span style="color:#f92672">from</span> sklearn.ensemble <span style="color:#f92672">import</span> RandomForestClassifier
+<span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> classification_report, \
+                            confusion_matrix
+<span style="color:#f92672">from</span> sklearn.model_selection <span style="color:#f92672">import</span> train_test_split
+
+<span style="color:#f92672">from</span> eobox.raster <span style="color:#f92672">import</span> extract, \
+                         load_extracted, \
+                         add_vector_data_attributes_to_extracted, \
+                         EOCube
+<span style="color:#f92672">from</span> eobox.ml <span style="color:#f92672">import</span> plot_confusion_matrix, \
+                     predict_extended
+</code></pre></div><h2 id="create-a-reference-dataset">Create a reference dataset</h2>
+<p>As described above, a reference dataset is required for supervised classification.
+A reference dataset contains the target class information, here land use/land cover information from the OSM vector data, and the feature vectors, i.e. the pixel values of the Landsat raster data.</p>
+<p>We will use the <code>extract</code> function imported above from the <strong>eobox</strong> package to perform the extraction:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">extract(src_vector: str,
+        burn_attribute: str,
+        src_raster: list,
+        dst_names: list,
+        dst_dir: str,
+        dist2pb: bool <span style="color:#f92672">=</span> False,
+        dist2rb: bool <span style="color:#f92672">=</span> False,
+        src_raster_template: str <span style="color:#f92672">=</span> None,
+        gdal_dtype: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>,
+        n_jobs: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-&gt;</span> int
+</code></pre></div><p>You can find the latest description of the function and arguments in <a href="https://eo-box.readthedocs.io/en/develop/eobox.raster.extraction.html#eobox.raster.extraction.extract">function&rsquo;s documentation</a> but we will also work through it in this section.</p>
+<p>As we can see from the function signature the function returns an integer, i.e. an exit code of 0 if the process was successful and 1 otherwise.
+That means, the function does not directly return the reference dataset but stores the extracted values as <em>NumPy</em> binary files in the directory given via <code>dst_dir</code>.
+Later we will load the data with the function <code>load_extracted</code>.</p>
+<p>Before we can call the function it is necessary to do some preparatory work for passing the right data to the arguments <code>src_vector</code>, <code>src_raster</code>, and <code>dst_names</code>.</p>
+<p>The documentation of <strong><code>src_vector</code></strong> says:</p>
+<p><em>Filename of the vector dataset. Currently, it must have the same CRS as the raster.</em></p>
+<p>And about the related <code>burn_attribute</code> we can read:</p>
+<p><em>Name of the attribute column in the <code>src_vector</code> dataset to be stored with the extracted data. This should usually be a unique ID for the features (points, lines, polygons) in the vector dataset. Note that this attribute should not contain zeros since this value is internally used for pixels that should not be extracted, or, in other words, that do not overlap with the vector data.</em></p>
+<p>Thus, we will create a new dataset from the OSM vector dataset, which is reprojected and has an attribute containing a non-zero polygon ID.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># path of the original OSM vector dataset </span>
+path_osm_4326 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./data_federsee/osm_feedersee_cleansed_4326.geojson&#34;</span>
+<span style="color:#75715e"># path of the new vector dataset that can be passed to </span>
+<span style="color:#75715e"># src_vector</span>
+path_osm <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./data_federsee/osm_feedersee_cleansed_32632.geojson&#34;</span>
+</code></pre></div><p>First, we read the file, reproject it the raster CRS and create the non-zero polygon ID and a class ID for the level-1 classes along with colors for the classes, which we will use for plots later.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">osm <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(path_osm_4326)
+osm <span style="color:#f92672">=</span> osm<span style="color:#f92672">.</span>to_crs(epsg<span style="color:#f92672">=</span><span style="color:#ae81ff">32632</span>) <span style="color:#75715e"># reproject in the raster CRS</span>
+osm[<span style="color:#e6db74">&#34;pid&#34;</span>] <span style="color:#f92672">=</span> range(<span style="color:#ae81ff">1</span>, osm<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#75715e"># polygon ids - do not use 0</span>
+osm[<span style="color:#e6db74">&#34;cid_l1&#34;</span>] <span style="color:#f92672">=</span> osm[<span style="color:#e6db74">&#34;lun_l1&#34;</span>]<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#34;category&#34;</span>)<span style="color:#f92672">.</span>cat<span style="color:#f92672">.</span>codes <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+
+class_lookup_l1 <span style="color:#f92672">=</span> osm[[<span style="color:#e6db74">&#34;lun_l1&#34;</span>, <span style="color:#e6db74">&#34;cid_l1&#34;</span>]] \
+    <span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;cid_l1&#34;</span>) \
+    <span style="color:#f92672">.</span>first() \
+    <span style="color:#f92672">.</span>reset_index()
+class_lookup_l1[<span style="color:#e6db74">&#34;color&#34;</span>] <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;#e31a1c&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#ff7f00&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#33a02c&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#b2df8a&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#b15928&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#1f78b4&#39;</span>, 
+                            <span style="color:#e6db74">&#39;#a6cee3&#39;</span>]
+class_lookup_l1<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#34;./data_federsee/class_lookup_l1.csv&#34;</span>)
+class_lookup_l1
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cid_l1</th>
+      <th>lun_l1</th>
+      <th>color</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>buildup</td>
+      <td>#e31a1c</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>farmland</td>
+      <td>#ff7f00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>forest</td>
+      <td>#33a02c</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>grassland</td>
+      <td>#b2df8a</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>orchard</td>
+      <td>#b15928</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>water</td>
+      <td>#1f78b4</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>wetland</td>
+      <td>#a6cee3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>In the case here, we also need to convert the geometry type of all polygons to the <em>MultiPolygon</em> type.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">osm[<span style="color:#e6db74">&#34;geometry&#34;</span>] <span style="color:#f92672">=</span> [MultiPolygon([geom]) <span style="color:#66d9ef">if</span> type(geom) <span style="color:#f92672">==</span> Polygon \
+                   <span style="color:#66d9ef">else</span> geom <span style="color:#66d9ef">for</span> geom <span style="color:#f92672">in</span> osm[<span style="color:#e6db74">&#34;geometry&#34;</span>]]
+
+<span style="color:#66d9ef">assert</span> osm[<span style="color:#e6db74">&#34;geometry&#34;</span>]<span style="color:#f92672">.</span>type<span style="color:#f92672">.</span>unique() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;MultiPolygon&#34;</span>
+</code></pre></div><p>Else we will get the following error later during extraction.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">ValueError</span>: 
+    Record<span style="color:#e6db74">&#39;s geometry type does not match collection schema&#39;</span>s geometry type: 
+        <span style="color:#e6db74">&#39;MultiPolygon&#39;</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;Polygon&#39;</span>
+</code></pre></div><p>Finally, we can write the new vector dataset to a file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">osm<span style="color:#f92672">.</span>to_file(path_osm, driver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;GeoJSON&#39;</span>)
+</code></pre></div><p><strong><code>src_raster</code></strong> is the <em>list of file paths of the single-band raster files from which to extract the pixel values.</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">paths_landsat <span style="color:#f92672">=</span> Path(<span style="color:#e6db74">&#34;./data_federsee/l8_aoi&#34;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#34;**/*.TIF&#34;</span>)
+paths_landsat <span style="color:#f92672">=</span> sorted(list(paths_landsat))
+</code></pre></div><p>And <strong><code>dst_names</code></strong> the <em>list of names corresponding to <code>src_raster</code>. These names will be used for the names of the NumPy binary files and will be the column names when the data is loaded with <code>load_extracted</code>.</em>
+Here, the following names contain enough information to be uniquely identifiable.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># dst_names</span>
+names_landsat <span style="color:#f92672">=</span> [f<span style="color:#e6db74">&#34;{fp.stem[17:25]}_{fp.stem[-2::]}&#34;</span> \
+                 <span style="color:#66d9ef">for</span> fp <span style="color:#f92672">in</span>  paths_landsat]
+</code></pre></div><p>Let&rsquo;s keep all relevant information about the Landsat layers in a DataFrame:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">landsat_layers <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(
+    {
+        <span style="color:#e6db74">&#34;uname&#34;</span>: names_landsat,
+        <span style="color:#e6db74">&#34;date&#34;</span>: [pd<span style="color:#f92672">.</span>datetime(int(name[:<span style="color:#ae81ff">4</span>]), int(name[<span style="color:#ae81ff">4</span>:<span style="color:#ae81ff">6</span>]), int(name[<span style="color:#ae81ff">6</span>:<span style="color:#ae81ff">8</span>])) <span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names_landsat],
+        <span style="color:#e6db74">&#34;band&#34;</span>: [name<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> name <span style="color:#f92672">in</span> names_landsat],
+        <span style="color:#e6db74">&#34;path&#34;</span>: paths_landsat,
+    }
+)
+landsat_layers<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#34;./data_federsee/landsat_layers.csv&#34;</span>)
+landsat_layers
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>uname</th>
+      <th>date</th>
+      <th>band</th>
+      <th>path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>20190412_B1</td>
+      <td>2019-04-12</td>
+      <td>B1</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20190412_B2</td>
+      <td>2019-04-12</td>
+      <td>B2</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20190412_B3</td>
+      <td>2019-04-12</td>
+      <td>B3</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20190412_B4</td>
+      <td>2019-04-12</td>
+      <td>B4</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>20190412_B5</td>
+      <td>2019-04-12</td>
+      <td>B5</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>20190412_B6</td>
+      <td>2019-04-12</td>
+      <td>B6</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>20190412_B7</td>
+      <td>2019-04-12</td>
+      <td>B7</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>20190818_B1</td>
+      <td>2019-08-18</td>
+      <td>B1</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>20190818_B2</td>
+      <td>2019-08-18</td>
+      <td>B2</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>20190818_B3</td>
+      <td>2019-08-18</td>
+      <td>B3</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>20190818_B4</td>
+      <td>2019-08-18</td>
+      <td>B4</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>20190818_B5</td>
+      <td>2019-08-18</td>
+      <td>B5</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>20190818_B6</td>
+      <td>2019-08-18</td>
+      <td>B6</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>20190818_B7</td>
+      <td>2019-08-18</td>
+      <td>B7</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190818...</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>20190903_B1</td>
+      <td>2019-09-03</td>
+      <td>B1</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>20190903_B2</td>
+      <td>2019-09-03</td>
+      <td>B2</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>20190903_B3</td>
+      <td>2019-09-03</td>
+      <td>B3</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>20190903_B4</td>
+      <td>2019-09-03</td>
+      <td>B4</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>20190903_B5</td>
+      <td>2019-09-03</td>
+      <td>B5</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>20190903_B6</td>
+      <td>2019-09-03</td>
+      <td>B6</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>20190903_B7</td>
+      <td>2019-09-03</td>
+      <td>B7</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190903...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>The rest of the arguments are quite easy to specify.
+We define a destination directory for the extracted data and change arguments <code>dist2pb</code> to <code>True</code>.
+For the rest of the arguments, we are fine with the defaults.</p>
+<p>The arguments have the following meaning:</p>
+<p><code>dst_dir {str}</code>: <em>Directory to store the data to.</em></p>
+<p><code>dist2pb {bool}</code>: <em>Create an additional auxiliary layer containing the distance to the closest polygon border for each extracted pixel. Defaults to <code>False</code>.</em></p>
+<p><code>dist2rb {bool}</code>: <em>Create an additional auxiliary layer containing the distance to the closest raster border for each extracted pixels. Defaults to <code>False</code>.</em></p>
+<p><code>src_raster_template {str}</code>: <em>A template raster to be used for rasterizing the vectorfile. Usually the first element of <code>src_raster</code>. (default: {None})</em></p>
+<p><code>gdal_dtype {int}</code>: <em>Numeric GDAL data type, defaults to 4 which is UInt32. See <a href="https://github.com/mapbox/rasterio/blob/master/rasterio/dtypes.py">https://github.com/mapbox/rasterio/blob/master/rasterio/dtypes.py</a> for useful look-up tables.</em></p>
+<p><code>n_jobs {int}</code>: <em>Number of parallel processors to be used for extraction. -1 uses all processors. Defaults to 1.</em></p>
+<p>Now we can perform the extraction.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dir_refset <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./data_federsee/refset&#34;</span>
+
+extract(
+    src_vector <span style="color:#f92672">=</span> path_osm,
+    burn_attribute <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;pid&#34;</span>,
+    src_raster <span style="color:#f92672">=</span> landsat_layers[<span style="color:#e6db74">&#34;path&#34;</span>],
+    dst_names <span style="color:#f92672">=</span> landsat_layers[<span style="color:#e6db74">&#34;uname&#34;</span>],
+    dst_dir <span style="color:#f92672">=</span> dir_refset,
+    dist2pb<span style="color:#f92672">=</span>True,
+    dist2rb<span style="color:#f92672">=</span>False,
+    src_raster_template <span style="color:#f92672">=</span> None,
+    gdal_dtype <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>,
+    n_jobs <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+)
+</code></pre></div><pre><code>100%|██████████| 176/176 [00:00&lt;00:00, 34128.41it/s]
+100%|██████████| 21/21 [00:00&lt;00:00, 863.53it/s]
+
+
+
+
+
+0
+</code></pre>
+<p>As a result, the following files are created in the destination directory.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">list(Path(dir_refset)<span style="color:#f92672">.</span>glob(<span style="color:#e6db74">&#34;*&#34;</span>))
+</code></pre></div><pre><code>[PosixPath('data_federsee/refset/20190903_B6.npy'),
+ PosixPath('data_federsee/refset/20190412_B4.npy'),
+ PosixPath('data_federsee/refset/aux_coord_x.npy'),
+ PosixPath('data_federsee/refset/20190412_B7.npy'),
+ PosixPath('data_federsee/refset/20190412_B2.npy'),
+ PosixPath('data_federsee/refset/20190412_B3.npy'),
+ PosixPath('data_federsee/refset/20190903_B7.npy'),
+ PosixPath('data_federsee/refset/20190818_B4.npy'),
+ PosixPath('data_federsee/refset/20190818_B7.npy'),
+ PosixPath('data_federsee/refset/20190903_B2.npy'),
+ PosixPath('data_federsee/refset/burn_attribute_rasterized_pid.tif'),
+ PosixPath('data_federsee/refset/20190412_B5.npy'),
+ PosixPath('data_federsee/refset/20190903_B4.npy'),
+ PosixPath('data_federsee/refset/aux_vector_dist2pb.npy'),
+ PosixPath('data_federsee/refset/20190818_B3.npy'),
+ PosixPath('data_federsee/refset/20190412_B6.npy'),
+ PosixPath('data_federsee/refset/20190818_B2.npy'),
+ PosixPath('data_federsee/refset/20190903_B5.npy'),
+ PosixPath('data_federsee/refset/20190818_B5.npy'),
+ PosixPath('data_federsee/refset/aux_coord_y.npy'),
+ PosixPath('data_federsee/refset/20190412_B1.npy'),
+ PosixPath('data_federsee/refset/20190903_B3.npy'),
+ PosixPath('data_federsee/refset/aux_vector_dist2pb.tif'),
+ PosixPath('data_federsee/refset/20190903_B1.npy'),
+ PosixPath('data_federsee/refset/20190818_B6.npy'),
+ PosixPath('data_federsee/refset/20190818_B1.npy'),
+ PosixPath('data_federsee/refset/aux_vector_pid.npy')]
+</code></pre>
+<p>As we can see we get one NumPy binary file per raster layer and additional auxiliary information: the coordinates of the pixels (<code>aux_coord_x</code>, <code>aux_coord_y</code>), the distance to the polygon border (<code>aux_vector_dist2pb</code>) and the polygon ID (<code>aux_vector_pid</code>).
+The GeoTIFFs are intermediate data holding the respective information as a raster.</p>
+<p>Still, for building and evaluating the classification model we need the target class information along with the pixel values.
+Additionally, sometimes we have other information stored in the vector data that we need for the analysis.
+We could later join the data in by using the polygon ID, however, for fast and easy access, we can also store that data as NumPy binary files along with the others.
+As you can see from the function&rsquo;s feedback so far only numeric columns are supported.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">add_vector_data_attributes_to_extracted(
+    ref_vector<span style="color:#f92672">=</span>path_osm,
+    pid<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;pid&#39;</span>,
+    dir_extracted<span style="color:#f92672">=</span>dir_refset,
+    overwrite<span style="color:#f92672">=</span>False)
+</code></pre></div><pre><code>Skipping column landuse - datatype 'object' not (yet) supported.
+Skipping column leaf_type - datatype 'object' not (yet) supported.
+Skipping column natural - datatype 'object' not (yet) supported.
+Skipping column water - datatype 'object' not (yet) supported.
+Skipping column wetland - datatype 'object' not (yet) supported.
+Skipping column lun - datatype 'object' not (yet) supported.
+Skipping column lun_l1 - datatype 'object' not (yet) supported.
+Skipping column color - datatype 'object' not (yet) supported.
+</code></pre>
+<p>Note that all the data derived from the vector data are prefixed with *aux_vector_*. This is true for the polygon ID and distance to the polygon border as well as for the additional attributes derived by <code>add_vector_data_attributes_to_extracted</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">list(Path(dir_refset)<span style="color:#f92672">.</span>glob(<span style="color:#e6db74">&#34;aux_vector_*.npy&#34;</span>))
+</code></pre></div><pre><code>[PosixPath('data_federsee/refset/aux_vector_cid_l1.npy'),
+ PosixPath('data_federsee/refset/aux_vector_area_m2.npy'),
+ PosixPath('data_federsee/refset/aux_vector_dist2pb.npy'),
+ PosixPath('data_federsee/refset/aux_vector_pid.npy')]
+</code></pre>
+<p>Now we can use <code>load_extracted</code> to load the data into a <strong>pandas</strong> DataFrame.
+You can load the data you want by an appropriate file pattern or list of file patterns.
+Here we use to files patterns that will load all data but makes sure that the auxiliary data is stored in the first columns of the DataFrame.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">refset <span style="color:#f92672">=</span> load_extracted(src_dir<span style="color:#f92672">=</span>dir_refset,
+                        patterns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;aux_*.npy&#39;</span>, <span style="color:#e6db74">&#39;2019*.npy&#39;</span>],
+                        sort<span style="color:#f92672">=</span>True)
+refset<span style="color:#f92672">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>aux_coord_x</th>
+      <th>aux_coord_y</th>
+      <th>aux_vector_area_m2</th>
+      <th>aux_vector_cid_l1</th>
+      <th>aux_vector_dist2pb</th>
+      <th>aux_vector_pid</th>
+      <th>20190412_B1</th>
+      <th>20190412_B2</th>
+      <th>20190412_B3</th>
+      <th>20190412_B4</th>
+      <th>...</th>
+      <th>20190818_B5</th>
+      <th>20190818_B6</th>
+      <th>20190818_B7</th>
+      <th>20190903_B1</th>
+      <th>20190903_B2</th>
+      <th>20190903_B3</th>
+      <th>20190903_B4</th>
+      <th>20190903_B5</th>
+      <th>20190903_B6</th>
+      <th>20190903_B7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>541470.0</td>
+      <td>5328390.0</td>
+      <td>6.111917e+06</td>
+      <td>3</td>
+      <td>1.000000</td>
+      <td>4</td>
+      <td>9849</td>
+      <td>8872</td>
+      <td>7829</td>
+      <td>7127</td>
+      <td>...</td>
+      <td>16736</td>
+      <td>8350</td>
+      <td>6183</td>
+      <td>8866</td>
+      <td>7960</td>
+      <td>7155</td>
+      <td>6278</td>
+      <td>15606</td>
+      <td>7966</td>
+      <td>6091</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>541500.0</td>
+      <td>5328390.0</td>
+      <td>6.111917e+06</td>
+      <td>3</td>
+      <td>1.414214</td>
+      <td>4</td>
+      <td>9806</td>
+      <td>8809</td>
+      <td>7778</td>
+      <td>6967</td>
+      <td>...</td>
+      <td>16108</td>
+      <td>8155</td>
+      <td>6099</td>
+      <td>8864</td>
+      <td>7947</td>
+      <td>7123</td>
+      <td>6273</td>
+      <td>14787</td>
+      <td>7619</td>
+      <td>5946</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>541530.0</td>
+      <td>5328390.0</td>
+      <td>6.111917e+06</td>
+      <td>3</td>
+      <td>2.236068</td>
+      <td>4</td>
+      <td>9767</td>
+      <td>8787</td>
+      <td>7724</td>
+      <td>6905</td>
+      <td>...</td>
+      <td>14122</td>
+      <td>7252</td>
+      <td>5805</td>
+      <td>8841</td>
+      <td>7929</td>
+      <td>7056</td>
+      <td>6227</td>
+      <td>13124</td>
+      <td>6924</td>
+      <td>5708</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>541560.0</td>
+      <td>5328390.0</td>
+      <td>6.111917e+06</td>
+      <td>3</td>
+      <td>3.162278</td>
+      <td>4</td>
+      <td>9750</td>
+      <td>8787</td>
+      <td>7687</td>
+      <td>6872</td>
+      <td>...</td>
+      <td>12640</td>
+      <td>7004</td>
+      <td>5752</td>
+      <td>8828</td>
+      <td>7911</td>
+      <td>7011</td>
+      <td>6194</td>
+      <td>11958</td>
+      <td>6632</td>
+      <td>5630</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>541590.0</td>
+      <td>5328390.0</td>
+      <td>6.111917e+06</td>
+      <td>3</td>
+      <td>4.123106</td>
+      <td>4</td>
+      <td>9780</td>
+      <td>8821</td>
+      <td>7725</td>
+      <td>6943</td>
+      <td>...</td>
+      <td>13200</td>
+      <td>7258</td>
+      <td>5846</td>
+      <td>8813</td>
+      <td>7899</td>
+      <td>7044</td>
+      <td>6207</td>
+      <td>12235</td>
+      <td>6843</td>
+      <td>5719</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div>
+<p>With that data, we can already perform initial explorative data analysis (EDA).
+For example, we can compare the class distribution of single features (boxplots) or bivariate distributions (scatterplots).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ax <span style="color:#f92672">=</span> refset<span style="color:#f92672">.</span>boxplot(by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;aux_vector_cid_l1&#39;</span>, 
+                    column<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;20190818_B5&#39;</span>], 
+                    grid<span style="color:#f92672">=</span>False, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">5</span>)) 
+</code></pre></div><p><img src="/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_29_0.png" alt="output_29_0.png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">refset[<span style="color:#e6db74">&#34;aux_added_color&#34;</span>] <span style="color:#f92672">=</span> refset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>] \
+    <span style="color:#f92672">.</span>map(class_lookup_l1<span style="color:#f92672">.</span>set_index(<span style="color:#e6db74">&#34;cid_l1&#34;</span>)[<span style="color:#e6db74">&#34;color&#34;</span>])
+ax <span style="color:#f92672">=</span> refset \
+    <span style="color:#f92672">.</span>plot<span style="color:#f92672">.</span>scatter(x<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;20190818_B5&#34;</span>, y<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;20190903_B4&#34;</span>, 
+                  s<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, c<span style="color:#f92672">=</span>refset[<span style="color:#e6db74">&#34;aux_added_color&#34;</span>], figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">5</span>))
+</code></pre></div><p><img src="/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png" alt="output_30_0.png"></p>
+<p>Of course, there is much more to investigate here but details are not the focus of this post.</p>
+<h2 id="create-a-training-and-test-dataset">Create a training and test dataset</h2>
+<p>Even though our data is now in a tabular form we should not forget, that we are working with spatial data where spatially close samples are more likely to be similar. This should be considered when a dataset is split into a training and test dataset since they should be relatively independent of each other. Therefore we generate two datasets that are spatially disjointed on polygon level, i.e. we assure that different pixels from the same polygon do not appear in both datasets. Thus, we derive a DataFrame with one sample per polygon and split on polygon-level.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># dataframe with one row per polygon, polygon ID and class ID</span>
+aux_polygon <span style="color:#f92672">=</span> refset[[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>, <span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>]] \
+    <span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>) \
+    <span style="color:#f92672">.</span>first() \
+    <span style="color:#f92672">.</span>reset_index()
+
+<span style="color:#75715e"># polygon IDs of the train and test set</span>
+pids_train, pids_test, _, _ <span style="color:#f92672">=</span> train_test_split(
+    aux_polygon[[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]],
+    aux_polygon[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>],
+    stratify<span style="color:#f92672">=</span>aux_polygon[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>],
+    test_size<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, 
+    random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">11</span>)
+
+<span style="color:#75715e"># pixels belonging to training and test polygons respectively</span>
+trainset <span style="color:#f92672">=</span> refset[
+    refset[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]<span style="color:#f92672">.</span>isin(pids_train[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>])]
+testset <span style="color:#f92672">=</span> refset[
+    refset[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]<span style="color:#f92672">.</span>isin(pids_test[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>])]
+
+<span style="color:#75715e"># overview: number of polygons &amp; pixels in training and test set</span>
+pd<span style="color:#f92672">.</span>DataFrame(
+    {
+        <span style="color:#e6db74">&#34;n_pixels&#34;</span>: refset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>] \
+            <span style="color:#f92672">.</span>value_counts()<span style="color:#f92672">.</span>sort_index(),
+        <span style="color:#e6db74">&#34;n_pixels_train&#34;</span>: trainset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>] \
+            <span style="color:#f92672">.</span>value_counts()<span style="color:#f92672">.</span>sort_index(),
+        <span style="color:#e6db74">&#34;n_pixels_test&#34;</span>: testset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>] \
+            <span style="color:#f92672">.</span>value_counts()<span style="color:#f92672">.</span>sort_index(),
+        <span style="color:#e6db74">&#34;n_polygons&#34;</span>: refset \
+            <span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>) \
+            <span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]<span style="color:#f92672">.</span>nunique()),
+        <span style="color:#e6db74">&#34;n_polygons_train&#34;</span>: trainset \
+            <span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>) \
+            <span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]<span style="color:#f92672">.</span>nunique()),
+        <span style="color:#e6db74">&#34;n_polygons_test&#34;</span>: testset \
+            <span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>) \
+            <span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x[<span style="color:#e6db74">&#34;aux_vector_pid&#34;</span>]<span style="color:#f92672">.</span>nunique()),
+    }
+)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>n_pixels</th>
+      <th>n_pixels_train</th>
+      <th>n_pixels_test</th>
+      <th>n_polygons</th>
+      <th>n_polygons_train</th>
+      <th>n_polygons_test</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1268</td>
+      <td>829</td>
+      <td>439</td>
+      <td>25</td>
+      <td>12</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6435</td>
+      <td>2935</td>
+      <td>3500</td>
+      <td>46</td>
+      <td>23</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>8762</td>
+      <td>7494</td>
+      <td>1268</td>
+      <td>28</td>
+      <td>14</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3856</td>
+      <td>1281</td>
+      <td>2575</td>
+      <td>48</td>
+      <td>24</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>30</td>
+      <td>23</td>
+      <td>7</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1634</td>
+      <td>11</td>
+      <td>1623</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>10930</td>
+      <td>9808</td>
+      <td>1122</td>
+      <td>18</td>
+      <td>9</td>
+      <td>9</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>We can see that, due to the polygon-based split, we have an extremely unbalanced number of pixels per class and training/test dataset.
+However, as before, we ignore this detail here and go on with the next step in our walk-through.</p>
+<h2 id="train-a-classification-model">Train a classification model</h2>
+<p>With the training dataset, it is easy to train a simple classification model.
+We will train a Random Forest classifier here since, compared to other classifiers, it usually performs well even without preprocessing the features (e.g. scaling) or tuning the hyper-parameters.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">rf_clf <span style="color:#f92672">=</span> RandomForestClassifier(n_estimators<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>, 
+                                oob_score<span style="color:#f92672">=</span>True, 
+                                n_jobs<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>, 
+                                random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">123</span>)
+rf_clf <span style="color:#f92672">=</span> rf_clf<span style="color:#f92672">.</span>fit(trainset[landsat_layers[<span style="color:#e6db74">&#34;uname&#34;</span>]], 
+                    trainset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>])
+</code></pre></div><h2 id="validate-a-classification-model">Validate a classification model</h2>
+<p>To perform a first validation, or accuracy assessment, of the model we first need to derive the model predictions for the samples of the test dataset.
+Then we can compare these values with the known target class information.
+Precision, recall F1-score and the confusion matrix are frequently reported for accuracy assessment.
+Note that we switch the <em>axes</em> of the confusion matrix since in remote sensing the <em>actual</em> class memberships are more frequently reported in the columns and the predictions in the rows.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y_pred <span style="color:#f92672">=</span> rf_clf<span style="color:#f92672">.</span>predict(testset[landsat_layers[<span style="color:#e6db74">&#34;uname&#34;</span>]])
+y_test <span style="color:#f92672">=</span> testset[<span style="color:#e6db74">&#34;aux_vector_cid_l1&#34;</span>]
+
+<span style="color:#66d9ef">print</span>(classification_report(y_test, y_pred))
+</code></pre></div><pre><code>              precision    recall  f1-score   support
+
+           1       0.68      0.62      0.65       439
+           2       0.91      0.88      0.89      3500
+           3       0.61      0.85      0.71      1268
+           4       0.86      0.66      0.75      2575
+           5       0.00      0.00      0.00         7
+           6       1.00      0.30      0.46      1623
+           7       0.30      0.68      0.42      1122
+
+    accuracy                           0.70     10534
+   macro avg       0.62      0.57      0.55     10534
+weighted avg       0.80      0.70      0.71     10534
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+
+cm <span style="color:#f92672">=</span> confusion_matrix(y_test, y_pred)
+ax <span style="color:#f92672">=</span> plot_confusion_matrix(cm,
+                           class_names<span style="color:#f92672">=</span>class_lookup_l1[<span style="color:#e6db74">&#34;lun_l1&#34;</span>],
+                           switch_axes<span style="color:#f92672">=</span>True,
+                           ax<span style="color:#f92672">=</span>ax)
+</code></pre></div><p><img src="/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_39_0.png" alt="output_39_0.png"></p>
+<p>Let&rsquo;s say we are happy with that result by now.
+Then we can create a map.</p>
+<h2 id="create-a-map">Create a map</h2>
+<p>The data here is so small, that it would be also quite easy to perform the whole prediction by reading all the data, reshape to a 2-dimensional array or DataFrame, predict, reshape the predictions back to a 3-dimensional raster-like format, and write it to a raster file.
+But if the data gets larger and does not fit in memory more boilerplate code would be required to perform this process in chunks.</p>
+<p>Here we will use the <code>EOCube</code> class from the package <strong>eobox</strong>.
+The <code>EOCube</code> class allows passing any custom function on spatial chunks of single-band raster layers with the same extent and pixel alignment.
+It allows us to do the above-mentioned steps in spatial chunks (or windows) and process the data with any custom defined function.
+Thus, you can focus on developing the core functionality instead of boilerplate code.
+You can also find out more about the class in the tutorials <a href="https://eo-box.readthedocs.io/en/develop/examples/raster/cube_an_intro_to_eocube.html#An-intro-to-EOCube">An Intro to <code>EOCube</code></a> and <a href="https://eo-box.readthedocs.io/en/develop/examples/raster/cube_viz.html#Visualization-with-EOCube">Visualization with <code> EOCube</code></a> in the <strong>eobox</strong> package documentation.</p>
+<p>Let us initialize an instance of <code>EOCube</code> with the data we need for prediction.
+Therefore, we need a DataFrame defining the layer stack which needs a column named <em>uname</em> with unique names and a column named <em>path</em> with the file paths of the rasters.
+We have created such a DataFrame above and can use it here:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">landsat_layers<span style="color:#f92672">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>uname</th>
+      <th>date</th>
+      <th>band</th>
+      <th>path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>20190412_B1</td>
+      <td>2019-04-12</td>
+      <td>B1</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20190412_B2</td>
+      <td>2019-04-12</td>
+      <td>B2</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20190412_B3</td>
+      <td>2019-04-12</td>
+      <td>B3</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20190412_B4</td>
+      <td>2019-04-12</td>
+      <td>B4</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>20190412_B5</td>
+      <td>2019-04-12</td>
+      <td>B5</td>
+      <td>data_federsee/l8_aoi/LC08_L1TP_194026_20190412...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">eoc <span style="color:#f92672">=</span> EOCube(landsat_layers, chunksize<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">6</span>)
+</code></pre></div><p>We want to apply the following core function developed for a DataFrame to the whole raster.
+It is an extension of <strong>sklearn</strong>&lsquo;s <code>predict_proba</code> method.
+It will return the probabilities, as returned by <code>predict_proba</code>, together with the target class ID (according to the maximum probability) and two confidence layers, the maximum probability and the difference between the maximum and the second-highest probability.</p>
+<p>We define the in the next cell, however, the details are not important here.
+The important message is:
+You can define any custom function with the following properties:</p>
+<ul>
+<li>The first input argument is a DataFrame where the rows represent pixels and the columns represent single-band raster layers.</li>
+<li>It can have any additional arguments that are needed in the function.</li>
+<li>It returns a DataFrame with the same number of rows, still the pixels, and any number of columns that will later be written to the output raster layers.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># this function can also be imported from eobox as follows:</span>
+<span style="color:#75715e"># from eobox.ml import predict_extended</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict_extended</span>(df, clf):
+    <span style="color:#e6db74">&#34;&#34;&#34;Derive probabilities, predictions, and condfidence layers.
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    Parameters
+</span><span style="color:#e6db74">    ----------
+</span><span style="color:#e6db74">    df : pandas.DataFrame
+</span><span style="color:#e6db74">        DataFrame containing the data matris X to be predicted with 
+</span><span style="color:#e6db74">        `clf`.
+</span><span style="color:#e6db74">    clf : sklearn.Classifier
+</span><span style="color:#e6db74">        Trained sklearn classfifier with a `predict_proba` method.
+</span><span style="color:#e6db74">    
+</span><span style="color:#e6db74">    Returns
+</span><span style="color:#e6db74">    -------
+</span><span style="color:#e6db74">    pandas.DataFrame
+</span><span style="color:#e6db74">        DataFrame with the same number of rows as ``df`` and 
+</span><span style="color:#e6db74">        (n_classes + 3) columns.
+</span><span style="color:#e6db74">        The columns contain the class predictions, confidence layers 
+</span><span style="color:#e6db74">        (max. probability and the difference between the max. 
+</span><span style="color:#e6db74">        and second highest probability), and class probabilities.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert_to_uint8</span>(arr):
+        <span style="color:#66d9ef">return</span> arr<span style="color:#f92672">.</span>astype(np<span style="color:#f92672">.</span>uint8)
+    
+    
+    probs <span style="color:#f92672">=</span> clf<span style="color:#f92672">.</span>predict_proba(df<span style="color:#f92672">.</span>values)
+    pred_idx <span style="color:#f92672">=</span> probs<span style="color:#f92672">.</span>argmax(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    pred <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros_like(pred_idx)<span style="color:#f92672">.</span>astype(np<span style="color:#f92672">.</span>uint8)
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(probs<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]):
+        pred[pred_idx <span style="color:#f92672">==</span> i] <span style="color:#f92672">=</span> clf<span style="color:#f92672">.</span>classes_[i]
+    <span style="color:#75715e"># get reliability layers:</span>
+    <span style="color:#75715e"># maximum probability</span>
+    <span style="color:#75715e"># margin, i.e.maximum probability minus second highest probability</span>
+    probs_sorted <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sort(probs, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    max_prob <span style="color:#f92672">=</span> probs_sorted[:, probs_sorted<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>]
+    margin <span style="color:#f92672">=</span> (
+        probs_sorted[:, 
+                     probs_sorted<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] \
+        <span style="color:#f92672">-</span> probs_sorted[:, 
+                       probs_sorted<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span>]
+    )
+
+    probs <span style="color:#f92672">=</span> convert_to_uint8(probs <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>)
+    max_prob <span style="color:#f92672">=</span> convert_to_uint8(max_prob <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>)
+    margin <span style="color:#f92672">=</span> convert_to_uint8(margin <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>)
+
+    ndigits <span style="color:#f92672">=</span> len(str(max(clf<span style="color:#f92672">.</span>classes_)))
+    prob_names <span style="color:#f92672">=</span> [f<span style="color:#e6db74">&#34;prob_{cid:0{ndigits}d}&#34;</span> <span style="color:#66d9ef">for</span> cid <span style="color:#f92672">in</span> clf<span style="color:#f92672">.</span>classes_]
+    df_result <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat(
+        [
+            pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#34;pred&#34;</span>: pred, 
+                          <span style="color:#e6db74">&#34;max_prob&#34;</span>: max_prob, 
+                          <span style="color:#e6db74">&#34;margin&#34;</span>: margin}),
+            pd<span style="color:#f92672">.</span>DataFrame(probs, 
+                         columns<span style="color:#f92672">=</span>prob_names),
+        ],
+        axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+    )
+    <span style="color:#66d9ef">return</span> df_result
+</code></pre></div><p>We can apply this function directly on the test set and get the desired outcomes.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pred_ext <span style="color:#f92672">=</span> predict_extended(testset[landsat_layers[<span style="color:#e6db74">&#34;uname&#34;</span>]], 
+                            rf_clf)
+pred_ext<span style="color:#f92672">.</span>head()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pred</th>
+      <th>max_prob</th>
+      <th>margin</th>
+      <th>prob_1</th>
+      <th>prob_2</th>
+      <th>prob_3</th>
+      <th>prob_4</th>
+      <th>prob_5</th>
+      <th>prob_6</th>
+      <th>prob_7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>68</td>
+      <td>46</td>
+      <td>0</td>
+      <td>2</td>
+      <td>68</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>86</td>
+      <td>74</td>
+      <td>0</td>
+      <td>0</td>
+      <td>86</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>91</td>
+      <td>82</td>
+      <td>0</td>
+      <td>0</td>
+      <td>91</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>73</td>
+      <td>49</td>
+      <td>0</td>
+      <td>0</td>
+      <td>73</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>95</td>
+      <td>91</td>
+      <td>0</td>
+      <td>0</td>
+      <td>95</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>But how to apply this function, or any other custom function working on the DataFrame representation of a raster stack, on the raster <code>EOCube</code> data?
+We can wrap the function in a small function that we then can pass to the <code>apply_and_write</code> method of <code>EOCube</code>.</p>
+<p>For development such a function it is useful to get one chunk of data as DataFrame, as it will also happen later in <code>apply_and_write</code>, and see if everything works.</p>
+<p>Before we also need some destination file paths for storing the final results.
+Note that currently the chunks are stored as GeoTiffs and the full image layers as VRTs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">dst_paths <span style="color:#f92672">=</span> [Path(<span style="color:#e6db74">&#34;./data_federsee/map/&#34;</span>) \
+             <span style="color:#f92672">/</span> (col <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.vrt&#34;</span>) <span style="color:#66d9ef">for</span> col <span style="color:#f92672">in</span> pred_ext]
+dst_paths
+</code></pre></div><pre><code>[PosixPath('data_federsee/map/pred.vrt'),
+ PosixPath('data_federsee/map/max_prob.vrt'),
+ PosixPath('data_federsee/map/margin.vrt'),
+ PosixPath('data_federsee/map/prob_1.vrt'),
+ PosixPath('data_federsee/map/prob_2.vrt'),
+ PosixPath('data_federsee/map/prob_3.vrt'),
+ PosixPath('data_federsee/map/prob_4.vrt'),
+ PosixPath('data_federsee/map/prob_5.vrt'),
+ PosixPath('data_federsee/map/prob_6.vrt'),
+ PosixPath('data_federsee/map/prob_7.vrt')]
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ji <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+eoc_chunk <span style="color:#f92672">=</span> eoc<span style="color:#f92672">.</span>get_chunk(ji)
+
+eoc_chunk <span style="color:#f92672">=</span> eoc_chunk<span style="color:#f92672">.</span>read_data()
+eoc_chunk <span style="color:#f92672">=</span> eoc_chunk<span style="color:#f92672">.</span>convert_data_to_dataframe()
+eoc_chunk_pred <span style="color:#f92672">=</span> predict_extended(eoc_chunk<span style="color:#f92672">.</span>data, 
+                                  rf_clf)<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#34;uint8&#34;</span>)
+eoc_chunk<span style="color:#f92672">.</span>write_dataframe(result<span style="color:#f92672">=</span>eoc_chunk_pred,
+                          dst_paths<span style="color:#f92672">=</span>dst_paths)
+</code></pre></div><p>This produced the following files:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">list(Path(<span style="color:#e6db74">&#34;./data_federsee/map/&#34;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#34;*.tif&#34;</span>))
+</code></pre></div><pre><code>[PosixPath('data_federsee/map/xchunks_cs64/prob_4/prob_4_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_5/prob_5_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_1/prob_1_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/pred/pred_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/max_prob/max_prob_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_2/prob_2_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_3/prob_3_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_7/prob_7_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/margin/margin_ji-01.tif'),
+ PosixPath('data_federsee/map/xchunks_cs64/prob_6/prob_6_ji-01.tif')]
+</code></pre>
+<p>Then, if everything works as desired we can wrap these lines in a function as follows and process all chunks with it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fun</span>(eoc_chunk, dst_paths, clf):
+    eoc_chunk <span style="color:#f92672">=</span> eoc_chunk<span style="color:#f92672">.</span>read_data()<span style="color:#f92672">.</span>convert_data_to_dataframe()
+    pred <span style="color:#f92672">=</span> predict_extended(eoc_chunk<span style="color:#f92672">.</span>data, rf_clf)<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#34;uint8&#34;</span>)
+    eoc_chunk<span style="color:#f92672">.</span>write_dataframe(result<span style="color:#f92672">=</span>pred, dst_paths<span style="color:#f92672">=</span>dst_paths)
+    <span style="color:#66d9ef">return</span> eoc_chunk<span style="color:#f92672">.</span>ji
+
+eoc<span style="color:#f92672">.</span>apply_and_write(fun<span style="color:#f92672">=</span>fun, dst_paths<span style="color:#f92672">=</span>dst_paths, clf<span style="color:#f92672">=</span>rf_clf)
+</code></pre></div><pre><code>  6%|▌         | 1/17 [00:00&lt;00:03,  5.23it/s]
+
+1 chunks already processed and skipped.
+
+
+100%|██████████| 17/17 [00:03&lt;00:00,  5.13it/s]
+</code></pre>
+<p>As a result, we get all the output layers for the whole image as VRTs:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">list(Path(<span style="color:#e6db74">&#34;./data_federsee/map/&#34;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#34;*.vrt&#34;</span>))
+</code></pre></div><pre><code>[PosixPath('data_federsee/map/prob_7.vrt'),
+ PosixPath('data_federsee/map/prob_1.vrt'),
+ PosixPath('data_federsee/map/pred.vrt'),
+ PosixPath('data_federsee/map/prob_3.vrt'),
+ PosixPath('data_federsee/map/prob_2.vrt'),
+ PosixPath('data_federsee/map/margin.vrt'),
+ PosixPath('data_federsee/map/prob_6.vrt'),
+ PosixPath('data_federsee/map/max_prob.vrt'),
+ PosixPath('data_federsee/map/prob_4.vrt'),
+ PosixPath('data_federsee/map/prob_5.vrt')]
+</code></pre>
+<p>These can usually be used as any other raster format.</p>
+<p>To finalize this section, let us have a look at the prediction and one of the confidence layers.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">6</span>))
+
+<span style="color:#66d9ef">with</span> rasterio<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#34;./data_federsee/map/pred.vrt&#34;</span>) <span style="color:#66d9ef">as</span> src:
+    arr <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>read()
+
+    sns<span style="color:#f92672">.</span>heatmap(arr[<span style="color:#ae81ff">0</span>,: , :], 
+                     cmap<span style="color:#f92672">=</span>sns<span style="color:#f92672">.</span>color_palette(class_lookup_l1[<span style="color:#e6db74">&#34;color&#34;</span>]),
+                     square<span style="color:#f92672">=</span>True,
+                     xticklabels<span style="color:#f92672">=</span>False,
+                     yticklabels<span style="color:#f92672">=</span>False,
+                     ax<span style="color:#f92672">=</span>ax[<span style="color:#ae81ff">0</span>],
+                    )
+<span style="color:#66d9ef">with</span> rasterio<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#34;./data_federsee/map/margin.vrt&#34;</span>) <span style="color:#66d9ef">as</span> src:
+    arr <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>read()
+    sns<span style="color:#f92672">.</span>heatmap(arr[<span style="color:#ae81ff">0</span>,: , :], 
+                     cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;RdBu&#34;</span>,
+                     square<span style="color:#f92672">=</span>True,
+                     xticklabels<span style="color:#f92672">=</span>False,
+                     yticklabels<span style="color:#f92672">=</span>False,
+                     ax<span style="color:#f92672">=</span>ax[<span style="color:#ae81ff">1</span>],
+                    )
+</code></pre></div><p><img src="/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_57_0.png" alt="output_57_0.png"></p>
+<h1 id="the-end">The End</h1>
+<p>In this post, we walked through the process of classifying remote sensing images.
+We used the Python package <strong>eobox</strong>  to apply the machine learning capabilities of <strong>sklearn</strong>  to geospatial raster data.</p>
+<p>I am happy if this post or the <strong>eobox</strong> package is helpful for anybody.
+As always, I am also happy about any critical feedback from which I can learn.</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/remote-sensing/">Remote Sensing</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/land-use/land-cover/">Land Use/Land Cover</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/supervised-classification/">Supervised Classification</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/python/">Python</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/eobox/">eobox</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      <li>None</li>
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+    
+      <a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/" class="button right"><span>Satellite imagery classification - II</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent Posts</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/" class="image" style="--bg-image: url('benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png');">
+    <img src="benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png" alt="output_30_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/">Satellite imagery classification - III</a></h2>
+          <time class="published" datetime="2020-01-06 00:00:00 &#43;0000 UTC">January 6, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/" class="image" style="--bg-image: url('benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png');">
+    <img src="benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png" alt="output_39_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/">Satellite imagery classification - II</a></h2>
+          <time class="published" datetime="2019-10-26 00:00:00 &#43;0000 UTC">October 26, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/" class="image" style="--bg-image: url('/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png');">
+    <img class="stretchV" src="/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png" alt="output_26_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">Satellite imagery classification - I</a></h2>
+          <time class="published" datetime="2019-09-29 00:00:00 &#43;0000 UTC">September 29, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-09-28-1_yay/" class="image" style="--bg-image: url('benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG');">
+    <img src="benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG" alt="2017-06-26_bike_4000x1250.JPG">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-09-28-1_yay/">YAY...</a></h2>
+          <time class="published" datetime="2019-09-28 00:00:00 &#43;0000 UTC">September 28, 2019</time>
+        </header>
+      </article>
+      
+      
+    </section>
+  
+
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>About</h1>
+      </header>
+      <p>Mini Autobiography</p>
+      <footer>
+        <a href="/benmack.github.io/about" class="button">Learn More</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Ben&#39;s Blog
+      <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.68.3' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/benmack.github.io/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/benmack.github.io/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/benmack.github.io/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

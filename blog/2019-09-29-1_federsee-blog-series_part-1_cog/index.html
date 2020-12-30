@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Satellite imagery classification - I - Ben&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.68.3" /><meta property="og:site_name" content="Ben&#39;s Blog">
+  <meta property="og:title" content="Satellite imagery classification - I">
+  <meta property="og:description" content="Leveraging Cloud Optimized GeoTIFFs to download parts of Landsat scenes">
+  <meta property="description" content="Leveraging Cloud Optimized GeoTIFFs to download parts of Landsat scenes">
+  <meta property="og:url" content="benmack.github.io/benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">
+  <meta property="og:type" content="article">
+  
+    
+      <meta property="og:image" content="/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png">
+      <meta property="og:image:alt" content="output_26_0.png">
+    
+  
+  <link rel="stylesheet" href="/benmack.github.io/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/benmack.github.io/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/benmack.github.io/" class="nav">
+        
+          Blog
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/benmack.github.io/" class="nav link"><i class='fa fa-home'></i> Home</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/projects/" class="nav link"><i class='far fa-id-card'></i> Projects</a>
+        
+      
+        
+          
+          <a href="/benmack.github.io/about/" class="nav link"><i class='far fa-id-card'></i> About</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Satellite%20imagery%20classification%20-%20I&amp;url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f&amp;title=Satellite%20imagery%20classification%20-%20I" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f&amp;title=Satellite%20imagery%20classification%20-%20I" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/benmack.github.io/"><img src="benmack.github.io/img/intro-pic/180929_genova_me.jpg" class="circle" width="100" alt="intro-pic" /></a>
+  <header>
+    <h1>Ben's Blog</h1>
+  </header>
+  <main>
+    <p>... | data | geospatial | python | remote sensing | ...</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">Satellite imagery classification - I</a></h2>
+    
+    
+      <p>Leveraging Cloud Optimized GeoTIFFs to download parts of Landsat scenes</p>
+    
+  </div>
+  <div class="meta">
+    <time datetime="2019-09-29 00:00:00 &#43;0000 UTC">September 29, 2019</time>
+    
+    <p>10-Minute Read</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Satellite%20imagery%20classification%20-%20I&amp;url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f&amp;title=Satellite%20imagery%20classification%20-%20I" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f&amp;title=Satellite%20imagery%20classification%20-%20I" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=benmack.github.io%2fblog%2f2019-09-29-1_federsee-blog-series_part-1_cog%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      <a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/" class="image" style="--bg-image: url('/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png');">
+    <img class="stretchV" src="/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png" alt="output_26_0.png">
+  </a>
+      <h1 id="introduction-to-the-post-series">Introduction to the post series</h1>
+<h2 id="outline">Outline</h2>
+<p>This is a three parts series about classification of remote sensing images.
+Remote sensing images are already beautiful enough to only look at, but they can also be used for mapping the earth&rsquo;s surface.
+When the task is to map categorical classes, such as forest, water, meadow, farmland, residential area, etc. the task can be solved by classification, often more specifically called land use and/or land cover classification.</p>
+<p>In this series we will follow the <a href="https://medium.com/datadriveninvestor/learning-paradigms-in-machine-learning-146ebf8b5943">supervised machine learing paradigm</a>
+to perform the classification.
+For that, we need two main ingredients which we will download and prepare in the first two parts of the post series:</p>
+<p>In <strong>Part 1</strong> of this series we will download the first incredient, i.e. the remote sensing images which will serve as features, or <code>X</code>.
+Particularly we will download Landsat scenes and leverage the Cloud Optimized GeoTiff format to only download a subset of the imagery.</p>
+<p>In <strong>Part 2</strong> we will download and prepare the second ingredient, i.e. georeferenced land use and land cover data which will serve as labels, or <code>y</code>.
+Particularly we will use OpenStreetMap data.</p>
+<p>In <strong>Part 3</strong> we will start cooking and combine the two datasets from the previous parts to train evaluate and apply a model.
+The model is able to predict the class label given the features, i.e. a list or image pixel values.
+We will also map the full area of interest (AOI) by applying the model to the full downloaded image.</p>
+<p>To solve all these tasks we will use Python.</p>
+<p>In <strong>Part 3</strong> I will show how the <a href="https://eo-box.readthedocs.io/en/latest/?badge=latest#"><strong>eobox</strong></a> package can be used for the above mentioned tasks to be solved there.
+I have been working on this package for fun and learning in the end of 2018 but it grew to something that I believe can be helpeful for others.</p>
+<p>Let us start with <strong>Part 1</strong>.
+But before we dive into it let us import the libraries we need along the way and define the AOI.</p>
+<h2 id="libraries">Libraries</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> folium
+<span style="color:#f92672">import</span> geopandas <span style="color:#f92672">as</span> gpd
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+<span style="color:#f92672">from</span> pyproj <span style="color:#f92672">import</span> Proj, transform
+<span style="color:#f92672">import</span> rasterio
+<span style="color:#f92672">from</span> shapely <span style="color:#f92672">import</span> geometry
+<span style="color:#f92672">import</span> subprocess
+<span style="color:#f92672">from</span> tqdm <span style="color:#f92672">import</span> tqdm
+</code></pre></div><h2 id="area-of-interest">Area of interest</h2>
+<p>A remote sensing image classification project focuses on a special AOI, i.e. the area in which we want to gain new information or knowledge.
+Here AOI as around the Feedersee (i.e. feather lake in english) in the heart of Upper Swabia and defined by the bounding box coordinates (as latitudes and longitudes):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">north<span style="color:#f92672">=</span><span style="color:#ae81ff">48.1068</span>
+east<span style="color:#f92672">=</span><span style="color:#ae81ff">9.6744</span>
+south<span style="color:#f92672">=</span><span style="color:#ae81ff">48.0680</span>
+west<span style="color:#f92672">=</span><span style="color:#ae81ff">9.5430</span>
+</code></pre></div><p>Let us create a <code>geopandas</code> <code>GeoDataFrame</code> from the coordinates and save the AOI as a GeoPackage.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">aoi_polygon <span style="color:#f92672">=</span> geometry<span style="color:#f92672">.</span>Polygon([[west, north], 
+                                [east, north], 
+                                [east, south], 
+                                [west, south]])
+
+gdf_aoi <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>GeoDataFrame(pd<span style="color:#f92672">.</span>DataFrame(data<span style="color:#f92672">=</span>[[<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;Federsee&#34;</span>]],
+                                        columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;ID&#34;</span>, <span style="color:#e6db74">&#34;Name&#34;</span>]), 
+                           geometry<span style="color:#f92672">=</span>[aoi_polygon], 
+                           crs<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;init&#39;</span>: <span style="color:#e6db74">&#39;epsg:4326&#39;</span>})
+
+<span style="color:#75715e"># safe as GeoPackage</span>
+Path(<span style="color:#e6db74">&#34;./data_federsee&#34;</span>)<span style="color:#f92672">.</span>mkdir(exist_ok<span style="color:#f92672">=</span>True, parents<span style="color:#f92672">=</span>True)
+gdf_aoi<span style="color:#f92672">.</span>to_file(filename<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;./data_federsee/aoi_federsee_4326.geojson&#39;</span>, driver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;GeoJSON&#39;</span>)
+</code></pre></div><p>Finally let&rsquo;s see where we are and visualize the AOI with a OSM background layer.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">map_osm <span style="color:#f92672">=</span> folium<span style="color:#f92672">.</span>Map()
+map_osm<span style="color:#f92672">.</span>fit_bounds([[south, west], [north, east]])
+folium<span style="color:#f92672">.</span>GeoJson(gdf_aoi)<span style="color:#f92672">.</span>add_to(map_osm)
+map_osm
+</code></pre></div><div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxoZWFkPiAgICAKICAgIDxtZXRhIGh0dHAtZXF1aXY9ImNvbnRlbnQtdHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PVVURi04IiAvPgogICAgCiAgICAgICAgPHNjcmlwdD4KICAgICAgICAgICAgTF9OT19UT1VDSCA9IGZhbHNlOwogICAgICAgICAgICBMX0RJU0FCTEVfM0QgPSBmYWxzZTsKICAgICAgICA8L3NjcmlwdD4KICAgIAogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuanMiPjwvc2NyaXB0PgogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY29kZS5qcXVlcnkuY29tL2pxdWVyeS0xLjEyLjQubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9qcy9ib290c3RyYXAubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9MZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy8yLjAuMi9sZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy5qcyI+PC9zY3JpcHQ+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vbWF4Y2RuLmJvb3RzdHJhcGNkbi5jb20vYm9vdHN0cmFwLzMuMi4wL2Nzcy9ib290c3RyYXAubWluLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9jc3MvYm9vdHN0cmFwLXRoZW1lLm1pbi5jc3MiLz4KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9mb250LWF3ZXNvbWUvNC42LjMvY3NzL2ZvbnQtYXdlc29tZS5taW4uY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuanMuY2xvdWRmbGFyZS5jb20vYWpheC9saWJzL0xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLzIuMC4yL2xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhd2Nkbi5naXRoYWNrLmNvbS9weXRob24tdmlzdWFsaXphdGlvbi9mb2xpdW0vbWFzdGVyL2ZvbGl1bS90ZW1wbGF0ZXMvbGVhZmxldC5hd2Vzb21lLnJvdGF0ZS5jc3MiLz4KICAgIDxzdHlsZT5odG1sLCBib2R5IHt3aWR0aDogMTAwJTtoZWlnaHQ6IDEwMCU7bWFyZ2luOiAwO3BhZGRpbmc6IDA7fTwvc3R5bGU+CiAgICA8c3R5bGU+I21hcCB7cG9zaXRpb246YWJzb2x1dGU7dG9wOjA7Ym90dG9tOjA7cmlnaHQ6MDtsZWZ0OjA7fTwvc3R5bGU+CiAgICAKICAgICAgICAgICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwKICAgICAgICAgICAgICAgIGluaXRpYWwtc2NhbGU9MS4wLCBtYXhpbXVtLXNjYWxlPTEuMCwgdXNlci1zY2FsYWJsZT1ubyIgLz4KICAgICAgICAgICAgPHN0eWxlPgogICAgICAgICAgICAgICAgI21hcF85ZGU4ODNlNzZjZjM0ODU1YTA2YTE1NTRkZTg0ZjI4ZiB7CiAgICAgICAgICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlOwogICAgICAgICAgICAgICAgICAgIHdpZHRoOiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgbGVmdDogMC4wJTsKICAgICAgICAgICAgICAgICAgICB0b3A6IDAuMCU7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIDwvc3R5bGU+CiAgICAgICAgCjwvaGVhZD4KPGJvZHk+ICAgIAogICAgCiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvbGl1bS1tYXAiIGlkPSJtYXBfOWRlODgzZTc2Y2YzNDg1NWEwNmExNTU0ZGU4NGYyOGYiID48L2Rpdj4KICAgICAgICAKPC9ib2R5Pgo8c2NyaXB0PiAgICAKICAgIAogICAgICAgICAgICB2YXIgbWFwXzlkZTg4M2U3NmNmMzQ4NTVhMDZhMTU1NGRlODRmMjhmID0gTC5tYXAoCiAgICAgICAgICAgICAgICAibWFwXzlkZTg4M2U3NmNmMzQ4NTVhMDZhMTU1NGRlODRmMjhmIiwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBjZW50ZXI6IFswLCAwXSwKICAgICAgICAgICAgICAgICAgICBjcnM6IEwuQ1JTLkVQU0czODU3LAogICAgICAgICAgICAgICAgICAgIHpvb206IDEsCiAgICAgICAgICAgICAgICAgICAgem9vbUNvbnRyb2w6IHRydWUsCiAgICAgICAgICAgICAgICAgICAgcHJlZmVyQ2FudmFzOiBmYWxzZSwKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgKTsKCiAgICAgICAgICAgIAoKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgdGlsZV9sYXllcl9lMzA3MjE1NmI3MmI0ZTRiOWY0ZmNmMGQyMjkxNDFjYSA9IEwudGlsZUxheWVyKAogICAgICAgICAgICAgICAgImh0dHBzOi8ve3N9LnRpbGUub3BlbnN0cmVldG1hcC5vcmcve3p9L3t4fS97eX0ucG5nIiwKICAgICAgICAgICAgICAgIHsiYXR0cmlidXRpb24iOiAiRGF0YSBieSBcdTAwMjZjb3B5OyBcdTAwM2NhIGhyZWY9XCJodHRwOi8vb3BlbnN0cmVldG1hcC5vcmdcIlx1MDAzZU9wZW5TdHJlZXRNYXBcdTAwM2MvYVx1MDAzZSwgdW5kZXIgXHUwMDNjYSBocmVmPVwiaHR0cDovL3d3dy5vcGVuc3RyZWV0bWFwLm9yZy9jb3B5cmlnaHRcIlx1MDAzZU9EYkxcdTAwM2MvYVx1MDAzZS4iLCAiZGV0ZWN0UmV0aW5hIjogZmFsc2UsICJtYXhOYXRpdmVab29tIjogMTgsICJtYXhab29tIjogMTgsICJtaW5ab29tIjogMCwgIm5vV3JhcCI6IGZhbHNlLCAib3BhY2l0eSI6IDEsICJzdWJkb21haW5zIjogImFiYyIsICJ0bXMiOiBmYWxzZX0KICAgICAgICAgICAgKS5hZGRUbyhtYXBfOWRlODgzZTc2Y2YzNDg1NWEwNmExNTU0ZGU4NGYyOGYpOwogICAgICAgIAogICAgCiAgICAgICAgICAgIG1hcF85ZGU4ODNlNzZjZjM0ODU1YTA2YTE1NTRkZTg0ZjI4Zi5maXRCb3VuZHMoCiAgICAgICAgICAgICAgICBbWzQ4LjA2OCwgOS41NDNdLCBbNDguMTA2OCwgOS42NzQ0XV0sCiAgICAgICAgICAgICAgICB7fQogICAgICAgICAgICApOwogICAgICAgIAogICAgCiAgICAgICAgZnVuY3Rpb24gZ2VvX2pzb25fNTMzN2UyOTNiZmQ3NDk4NzhkMzNkMmRkYmEyZmRhMTVfb25FYWNoRmVhdHVyZShmZWF0dXJlLCBsYXllcikgewogICAgICAgICAgICBsYXllci5vbih7CiAgICAgICAgICAgICAgICBjbGljazogZnVuY3Rpb24oZSkgewogICAgICAgICAgICAgICAgICAgIG1hcF85ZGU4ODNlNzZjZjM0ODU1YTA2YTE1NTRkZTg0ZjI4Zi5maXRCb3VuZHMoZS50YXJnZXQuZ2V0Qm91bmRzKCkpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9KTsKICAgICAgICB9OwogICAgICAgIHZhciBnZW9fanNvbl81MzM3ZTI5M2JmZDc0OTg3OGQzM2QyZGRiYTJmZGExNSA9IEwuZ2VvSnNvbihudWxsLCB7CiAgICAgICAgICAgICAgICBvbkVhY2hGZWF0dXJlOiBnZW9fanNvbl81MzM3ZTI5M2JmZDc0OTg3OGQzM2QyZGRiYTJmZGExNV9vbkVhY2hGZWF0dXJlLAogICAgICAgICAgICAKICAgICAgICB9KS5hZGRUbyhtYXBfOWRlODgzZTc2Y2YzNDg1NWEwNmExNTU0ZGU4NGYyOGYpOwogICAgICAgICAgICBnZW9fanNvbl81MzM3ZTI5M2JmZDc0OTg3OGQzM2QyZGRiYTJmZGExNS5hZGREYXRhKHsiYmJveCI6IFs5LjU0MywgNDguMDY4LCA5LjY3NDQsIDQ4LjEwNjhdLCAiZmVhdHVyZXMiOiBbeyJiYm94IjogWzkuNTQzLCA0OC4wNjgsIDkuNjc0NCwgNDguMTA2OF0sICJnZW9tZXRyeSI6IHsiY29vcmRpbmF0ZXMiOiBbW1s5LjU0MywgNDguMTA2OF0sIFs5LjY3NDQsIDQ4LjEwNjhdLCBbOS42NzQ0LCA0OC4wNjhdLCBbOS41NDMsIDQ4LjA2OF0sIFs5LjU0MywgNDguMTA2OF1dXSwgInR5cGUiOiAiUG9seWdvbiJ9LCAiaWQiOiAiMCIsICJwcm9wZXJ0aWVzIjogeyJJRCI6IDEsICJOYW1lIjogIkZlZGVyc2VlIn0sICJ0eXBlIjogIkZlYXR1cmUifV0sICJ0eXBlIjogIkZlYXR1cmVDb2xsZWN0aW9uIn0pOwogICAgICAgIAo8L3NjcmlwdD4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+<h1 id="part-1-leveraging-cloud-optimized-geotiffs-to-download-parts-of-landsat-scenes">Part 1: Leveraging Cloud Optimized GeoTIFFs to download parts of Landsat scenes</h1>
+<h2 id="why-cloud-optimized-geotiff">Why Cloud Optimized GeoTIFF?</h2>
+<p>In many, if not most, cases satellite imagery is distributed in quite hugh data packages.
+This is at least true for the past and present.
+For example, when you download a Landsat 8 Level-1 GeoTIFF Data Product from <a href="https://earthexplorer.usgs.gov/">USGS EarthExplorer</a> it will have around 900 MB.
+What if you need only a small part of that imagery such as here where we want to download only a small chunk of some bands of the whole scene?
+You need to download the whole cake even though you only want a piece or some crumbs of it.</p>
+<p>The <a href="https://www.cogeo.org/">Cloud Optimized GeoTIFF</a> (COG) format is on the way to chang that.
+Given that the data provider makes the data available as COGs it allow the <em>clients [&hellip;] to ask for just the parts of a file they need</em> (quote from <a href="https://www.cogeo.org/">Cloud Optimized GeoTIFF</a>).</p>
+<p><a href="https://docs.opendata.aws/landsat-pds/readme.html">Data in the Landsat PDS bucket</a> is stored as COGs and this is why we download the data from there.</p>
+<p>In Python <a href="https://rasterio.readthedocs.io/en/stable/"><strong>rasterio</strong></a> is a great package to access to geospatial raster data.</p>
+<p><strong>rasterio</strong> knows how to handle GOCs since it builds upon GDAL and <a href="https://trac.osgeo.org/gdal/wiki/CloudOptimizedGeoTIFF">GDAL handles COGs</a>.
+Sean Gilles has written a great <a href="https://gist.github.com/sgillies/7e5cd548110a5b4d45ac1a1d93cb17a3">Jupyter notebook with <em>Advanced features in Rasterio</em></a> from which I took most of the code below.
+The notebook demonstrates <em>five advanced features that are useful for developing cloud-native applications</em>.
+We will make use of those helping us to download only the part of the Landsat imagery covering our AOI.</p>
+<h2 id="what-to-download">What to download?</h2>
+<p>If you are interested in only a few specific Landsat scenes it is convenient to browse and select for the imagery in the <a href="https://apps.sentinel-hub.com/eo-browser/?lat=48.07515&amp;lng=9.61493&amp;zoom=13">EO-Browser of Synergise</a>.
+A part of the nice search and visualization features it also offers the AWS path of the scenes.</p>
+<p>In this post we are interested in the following Landsat scenes:</p>
+<ul>
+<li>
+<p><a href="http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190903_20190903_01_RT/index.html">http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190903_20190903_01_RT/index.html</a></p>
+</li>
+<li>
+<p><a href="http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190818_20190818_01_RT/index.html">http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190818_20190818_01_RT/index.html</a></p>
+</li>
+<li>
+<p><a href="http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190412_20190412_01_RT/index.html">http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190412_20190412_01_RT/index.html</a></p>
+</li>
+</ul>
+<p>We want to download the bands 2, 3, 4, 5, 6 and 7 of these scenes but only the parts that overlap with the AOI.</p>
+<p>Let us first define variables containing with the scenes and bands we want to download.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scenes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;LC08_L1TP_194026_20190412_20190412_01_RT&#34;</span>,
+          <span style="color:#e6db74">&#34;LC08_L1TP_194026_20190818_20190818_01_RT&#34;</span>,
+          <span style="color:#e6db74">&#34;LC08_L1TP_194026_20190903_20190903_01_RT&#34;</span>
+         ]
+bands <span style="color:#f92672">=</span> [f<span style="color:#e6db74">&#34;B{band}&#34;</span> <span style="color:#66d9ef">for</span> band <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8</span>)]
+</code></pre></div><p>And a function with which we can easily create the paths to the specific file.
+From the <a href="https://docs.opendata.aws/landsat-pds/readme.html">data in the Landsat PDS bucket</a> we know that it is organized by path, row, and scene.
+So &hellip;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse_aws_landsat_path</span>(scene, band, ext<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TIF&#34;</span>):
+    <span style="color:#e6db74">&#34;&#34;&#34;Parse a scene file path in the aws landsat bucket.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    path <span style="color:#f92672">=</span> scene<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">2</span>][:<span style="color:#ae81ff">3</span>]
+    row <span style="color:#f92672">=</span> scene<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">3</span>:]
+    path <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#34;s3://landsat-pds/c1/L8/&#34;</span> \
+           f<span style="color:#e6db74">&#34;{path}/{row}/{scene}/{scene}_{band}.{ext}&#34;</span>
+    <span style="color:#66d9ef">return</span> path
+
+<span style="color:#75715e"># example</span>
+fp <span style="color:#f92672">=</span> parse_aws_landsat_path(<span style="color:#e6db74">&#34;LC08_L1TP_194026_20190818_20190818_01_RT&#34;</span>, 
+                            <span style="color:#e6db74">&#34;B5&#34;</span>, 
+                            <span style="color:#e6db74">&#34;TIF&#34;</span>)
+fp
+</code></pre></div><pre><code>'s3://landsat-pds/c1/L8/194/026/LC08_L1TP_194026_20190818_20190818_01_RT/LC08_L1TP_194026_20190818_20190818_01_RT_B5.TIF'
+</code></pre>
+<p>We can open this dataset with <strong>rasterio</strong> as any GDAL readable raster file we would have stored locally.
+But before we need to set AWS credentials in our environment.
+Even if they are empty. But without we get an <code>CPLE_AWSInvalidCredentialsError</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>env AWS_SECRET_ACCESS_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#f92672">%</span>env AWS_NO_SIGN_REQUEST<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</code></pre></div><pre><code>env: AWS_SECRET_ACCESS_KEY=&quot;&quot;
+env: AWS_NO_SIGN_REQUEST=&quot;&quot;
+</code></pre>
+<p>Now we can get access the data and, for example, get the metadata attribute of it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> rasterio<span style="color:#f92672">.</span>open(fp) <span style="color:#66d9ef">as</span> src:
+    meta <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>meta
+meta
+</code></pre></div><pre><code>{'driver': 'GTiff',
+ 'dtype': 'uint16',
+ 'nodata': None,
+ 'width': 7801,
+ 'height': 7901,
+ 'count': 1,
+ 'crs': CRS.from_epsg(32632),
+ 'transform': Affine(30.0, 0.0, 462885.0,
+        0.0, -30.0, 5531115.0)}
+</code></pre>
+<h2 id="how-to-download">How to download?</h2>
+<h3 id="how-to-download-with-rasterio">How to download with <strong>rasterio</strong>?</h3>
+<p>As we have seen the coordinate reference system (CRS) of the Landsat GeoTIFFs is Universal Transverse Mercator (UTM) system.
+Our AOI bounding box is given in latitudes and longitudes.
+To get the data of the AOI we first need to derive the bounding box coordinates in the CRS of the imagery.
+Then we can use these coordinates to create a <a href="https://rasterio.readthedocs.io/en/stable/api/rasterio.windows.html?highlight=Window#rasterio.windows.Window"><code>rasterio.windows.Window</code></a> instance using the <a href="https://rasterio.readthedocs.io/en/stable/api/rasterio.windows.html?highlight=Window#rasterio.windows.from_bounds"><code>rasterio.windows.from_bounds</code></a> function.
+Finally we are ready to read just the data we need.</p>
+<p>Let us converting the AOI to the imagery CRS and taking the bounding box coorinates from there.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">gdf_aoi_32632 <span style="color:#f92672">=</span> gdf_aoi<span style="color:#f92672">.</span>to_crs({<span style="color:#e6db74">&#39;init&#39;</span>: <span style="color:#e6db74">&#39;epsg:32632&#39;</span>})
+gdf_aoi<span style="color:#f92672">.</span>to_file(filename<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;data_federsee/aoi_federsee_32632.geojson&#39;</span>, driver<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;GeoJSON&#39;</span>)
+
+<span style="color:#66d9ef">print</span>(gdf_aoi_32632<span style="color:#f92672">.</span>bounds<span style="color:#f92672">.</span>loc[<span style="color:#ae81ff">0</span>])
+
+west_32632, south_32632, east_32632, north_32632 <span style="color:#f92672">=</span> \
+    gdf_aoi_32632<span style="color:#f92672">.</span>bounds<span style="color:#f92672">.</span>loc[<span style="color:#ae81ff">0</span>, :]
+
+
+</code></pre></div><pre><code>minx    5.404216e+05
+miny    5.324001e+06
+maxx    5.502409e+05
+maxy    5.328391e+06
+Name: 0, dtype: float64
+</code></pre>
+<p><strong>Note of caution:</strong></p>
+<p>This is different from converting the two points and using the coordinates of the resulting points to create the bounding box!
+This is what I did first, so here is the difference.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">proj_4326 <span style="color:#f92672">=</span> Proj(init<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;epsg:4326&#39;</span>)
+proj_32632 <span style="color:#f92672">=</span> Proj(init<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;epsg:32632&#39;</span>)
+west_32632_INEXACT, north_32632_INEXACT <span style="color:#f92672">=</span> transform(proj_4326, 
+                                                    proj_32632, 
+                                                    west, north)
+east_32632_INEXACT, south_32632_INEXACT <span style="color:#f92672">=</span> transform(proj_4326,
+                                                    proj_32632,
+                                                    east, south)
+
+aoi_polygon_INEXACT <span style="color:#f92672">=</span> geometry<span style="color:#f92672">.</span>Polygon([[west_32632_INEXACT, north_32632_INEXACT],
+                                        [east_32632_INEXACT, north_32632_INEXACT],
+                                        [east_32632_INEXACT, south_32632_INEXACT],
+                                        [west_32632_INEXACT, south_32632_INEXACT]])
+
+gdf_aoi_32632<span style="color:#f92672">.</span>loc[<span style="color:#ae81ff">1</span>, :] <span style="color:#f92672">=</span> (<span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;Federsee_INEXACT&#34;</span>, aoi_polygon_INEXACT)
+map_osm <span style="color:#f92672">=</span> folium<span style="color:#f92672">.</span>Map()
+map_osm<span style="color:#f92672">.</span>fit_bounds([[south, west], [south <span style="color:#f92672">+</span> <span style="color:#f92672">.</span><span style="color:#ae81ff">01</span>, west <span style="color:#f92672">+</span> <span style="color:#f92672">.</span><span style="color:#ae81ff">01</span>]])
+folium<span style="color:#f92672">.</span>GeoJson(gdf_aoi_32632)<span style="color:#f92672">.</span>add_to(map_osm)
+map_osm
+</code></pre></div><div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxoZWFkPiAgICAKICAgIDxtZXRhIGh0dHAtZXF1aXY9ImNvbnRlbnQtdHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PVVURi04IiAvPgogICAgCiAgICAgICAgPHNjcmlwdD4KICAgICAgICAgICAgTF9OT19UT1VDSCA9IGZhbHNlOwogICAgICAgICAgICBMX0RJU0FCTEVfM0QgPSBmYWxzZTsKICAgICAgICA8L3NjcmlwdD4KICAgIAogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuanMiPjwvc2NyaXB0PgogICAgPHNjcmlwdCBzcmM9Imh0dHBzOi8vY29kZS5qcXVlcnkuY29tL2pxdWVyeS0xLjEyLjQubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9qcy9ib290c3RyYXAubWluLmpzIj48L3NjcmlwdD4KICAgIDxzY3JpcHQgc3JjPSJodHRwczovL2NkbmpzLmNsb3VkZmxhcmUuY29tL2FqYXgvbGlicy9MZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy8yLjAuMi9sZWFmbGV0LmF3ZXNvbWUtbWFya2Vycy5qcyI+PC9zY3JpcHQ+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vbGVhZmxldEAxLjUuMS9kaXN0L2xlYWZsZXQuY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vbWF4Y2RuLmJvb3RzdHJhcGNkbi5jb20vYm9vdHN0cmFwLzMuMi4wL2Nzcy9ib290c3RyYXAubWluLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL21heGNkbi5ib290c3RyYXBjZG4uY29tL2Jvb3RzdHJhcC8zLjIuMC9jc3MvYm9vdHN0cmFwLXRoZW1lLm1pbi5jc3MiLz4KICAgIDxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iaHR0cHM6Ly9tYXhjZG4uYm9vdHN0cmFwY2RuLmNvbS9mb250LWF3ZXNvbWUvNC42LjMvY3NzL2ZvbnQtYXdlc29tZS5taW4uY3NzIi8+CiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Imh0dHBzOi8vY2RuanMuY2xvdWRmbGFyZS5jb20vYWpheC9saWJzL0xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLzIuMC4yL2xlYWZsZXQuYXdlc29tZS1tYXJrZXJzLmNzcyIvPgogICAgPGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJodHRwczovL3Jhd2Nkbi5naXRoYWNrLmNvbS9weXRob24tdmlzdWFsaXphdGlvbi9mb2xpdW0vbWFzdGVyL2ZvbGl1bS90ZW1wbGF0ZXMvbGVhZmxldC5hd2Vzb21lLnJvdGF0ZS5jc3MiLz4KICAgIDxzdHlsZT5odG1sLCBib2R5IHt3aWR0aDogMTAwJTtoZWlnaHQ6IDEwMCU7bWFyZ2luOiAwO3BhZGRpbmc6IDA7fTwvc3R5bGU+CiAgICA8c3R5bGU+I21hcCB7cG9zaXRpb246YWJzb2x1dGU7dG9wOjA7Ym90dG9tOjA7cmlnaHQ6MDtsZWZ0OjA7fTwvc3R5bGU+CiAgICAKICAgICAgICAgICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwKICAgICAgICAgICAgICAgIGluaXRpYWwtc2NhbGU9MS4wLCBtYXhpbXVtLXNjYWxlPTEuMCwgdXNlci1zY2FsYWJsZT1ubyIgLz4KICAgICAgICAgICAgPHN0eWxlPgogICAgICAgICAgICAgICAgI21hcF80ZTkxZjhjNmI3ZTE0MGEwODMyNWFhZTIxZmJiMzk0MSB7CiAgICAgICAgICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlOwogICAgICAgICAgICAgICAgICAgIHdpZHRoOiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiAxMDAuMCU7CiAgICAgICAgICAgICAgICAgICAgbGVmdDogMC4wJTsKICAgICAgICAgICAgICAgICAgICB0b3A6IDAuMCU7CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIDwvc3R5bGU+CiAgICAgICAgCjwvaGVhZD4KPGJvZHk+ICAgIAogICAgCiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZvbGl1bS1tYXAiIGlkPSJtYXBfNGU5MWY4YzZiN2UxNDBhMDgzMjVhYWUyMWZiYjM5NDEiID48L2Rpdj4KICAgICAgICAKPC9ib2R5Pgo8c2NyaXB0PiAgICAKICAgIAogICAgICAgICAgICB2YXIgbWFwXzRlOTFmOGM2YjdlMTQwYTA4MzI1YWFlMjFmYmIzOTQxID0gTC5tYXAoCiAgICAgICAgICAgICAgICAibWFwXzRlOTFmOGM2YjdlMTQwYTA4MzI1YWFlMjFmYmIzOTQxIiwKICAgICAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICAgICBjZW50ZXI6IFswLCAwXSwKICAgICAgICAgICAgICAgICAgICBjcnM6IEwuQ1JTLkVQU0czODU3LAogICAgICAgICAgICAgICAgICAgIHpvb206IDEsCiAgICAgICAgICAgICAgICAgICAgem9vbUNvbnRyb2w6IHRydWUsCiAgICAgICAgICAgICAgICAgICAgcHJlZmVyQ2FudmFzOiBmYWxzZSwKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgKTsKCiAgICAgICAgICAgIAoKICAgICAgICAKICAgIAogICAgICAgICAgICB2YXIgdGlsZV9sYXllcl8zYWMzYWZlNmY0YjY0YTA3YmFjYWY3NWIwNGVlNTdiNCA9IEwudGlsZUxheWVyKAogICAgICAgICAgICAgICAgImh0dHBzOi8ve3N9LnRpbGUub3BlbnN0cmVldG1hcC5vcmcve3p9L3t4fS97eX0ucG5nIiwKICAgICAgICAgICAgICAgIHsiYXR0cmlidXRpb24iOiAiRGF0YSBieSBcdTAwMjZjb3B5OyBcdTAwM2NhIGhyZWY9XCJodHRwOi8vb3BlbnN0cmVldG1hcC5vcmdcIlx1MDAzZU9wZW5TdHJlZXRNYXBcdTAwM2MvYVx1MDAzZSwgdW5kZXIgXHUwMDNjYSBocmVmPVwiaHR0cDovL3d3dy5vcGVuc3RyZWV0bWFwLm9yZy9jb3B5cmlnaHRcIlx1MDAzZU9EYkxcdTAwM2MvYVx1MDAzZS4iLCAiZGV0ZWN0UmV0aW5hIjogZmFsc2UsICJtYXhOYXRpdmVab29tIjogMTgsICJtYXhab29tIjogMTgsICJtaW5ab29tIjogMCwgIm5vV3JhcCI6IGZhbHNlLCAib3BhY2l0eSI6IDEsICJzdWJkb21haW5zIjogImFiYyIsICJ0bXMiOiBmYWxzZX0KICAgICAgICAgICAgKS5hZGRUbyhtYXBfNGU5MWY4YzZiN2UxNDBhMDgzMjVhYWUyMWZiYjM5NDEpOwogICAgICAgIAogICAgCiAgICAgICAgICAgIG1hcF80ZTkxZjhjNmI3ZTE0MGEwODMyNWFhZTIxZmJiMzk0MS5maXRCb3VuZHMoCiAgICAgICAgICAgICAgICBbWzQ4LjA2OCwgOS41NDNdLCBbNDguMDc3OTk5OTk5OTk5OTk2LCA5LjU1Mjk5OTk5OTk5OTk5OV1dLAogICAgICAgICAgICAgICAge30KICAgICAgICAgICAgKTsKICAgICAgICAKICAgIAogICAgICAgIGZ1bmN0aW9uIGdlb19qc29uX2NlMTRmMTA1NjIwNjQyNjA4YmI5MjBlMGI4OTc1ODdlX29uRWFjaEZlYXR1cmUoZmVhdHVyZSwgbGF5ZXIpIHsKICAgICAgICAgICAgbGF5ZXIub24oewogICAgICAgICAgICAgICAgY2xpY2s6IGZ1bmN0aW9uKGUpIHsKICAgICAgICAgICAgICAgICAgICBtYXBfNGU5MWY4YzZiN2UxNDBhMDgzMjVhYWUyMWZiYjM5NDEuZml0Qm91bmRzKGUudGFyZ2V0LmdldEJvdW5kcygpKTsKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfSk7CiAgICAgICAgfTsKICAgICAgICB2YXIgZ2VvX2pzb25fY2UxNGYxMDU2MjA2NDI2MDhiYjkyMGUwYjg5NzU4N2UgPSBMLmdlb0pzb24obnVsbCwgewogICAgICAgICAgICAgICAgb25FYWNoRmVhdHVyZTogZ2VvX2pzb25fY2UxNGYxMDU2MjA2NDI2MDhiYjkyMGUwYjg5NzU4N2Vfb25FYWNoRmVhdHVyZSwKICAgICAgICAgICAgCiAgICAgICAgfSkuYWRkVG8obWFwXzRlOTFmOGM2YjdlMTQwYTA4MzI1YWFlMjFmYmIzOTQxKTsKICAgICAgICAgICAgZ2VvX2pzb25fY2UxNGYxMDU2MjA2NDI2MDhiYjkyMGUwYjg5NzU4N2UuYWRkRGF0YSh7ImJib3giOiBbOS41NDI1OTkwNjQ5NTYwNywgNDguMDY4MDAwMDAwMDAwMDA1LCA5LjY3NDg5ODMwODU5MTk0NCwgNDguMTA2ODAwMDAwMDAwMDFdLCAiZmVhdHVyZXMiOiBbeyJiYm94IjogWzkuNTQzLCA0OC4wNjgwMDAwMDAwMDAwMDUsIDkuNjc0NCwgNDguMTA2ODAwMDAwMDAwMDFdLCAiZ2VvbWV0cnkiOiB7ImNvb3JkaW5hdGVzIjogW1tbOS41NDMsIDQ4LjEwNjgwMDAwMDAwMDAxXSwgWzkuNjc0NCwgNDguMTA2OF0sIFs5LjY3NDQsIDQ4LjA2ODAwMDAwMDAwMDAwNV0sIFs5LjU0MywgNDguMDY4MDAwMDAwMDAwMDA1XSwgWzkuNTQzLCA0OC4xMDY4MDAwMDAwMDAwMV1dXSwgInR5cGUiOiAiUG9seWdvbiJ9LCAiaWQiOiAiMCIsICJwcm9wZXJ0aWVzIjogeyJJRCI6IDEuMCwgIk5hbWUiOiAiRmVkZXJzZWUifSwgInR5cGUiOiAiRmVhdHVyZSJ9LCB7ImJib3giOiBbOS41NDI1OTkwNjQ5NTYwNywgNDguMDY4MDAwMDAwMDAwMDA1LCA5LjY3NDg5ODMwODU5MTk0NCwgNDguMTA2ODAwMDAwMDAwMDFdLCAiZ2VvbWV0cnkiOiB7ImNvb3JkaW5hdGVzIjogW1tbOS41NDMsIDQ4LjEwNjgwMDAwMDAwMDAxXSwgWzkuNjc0ODk4MzA4NTkxOTQ0LCA0OC4xMDYxMDEwNzc0MjE5MDRdLCBbOS42NzQ0LCA0OC4wNjgwMDAwMDAwMDAwMDVdLCBbOS41NDI1OTkwNjQ5NTYwNywgNDguMDY4Njk3OTk0NDE2ODddLCBbOS41NDMsIDQ4LjEwNjgwMDAwMDAwMDAxXV1dLCAidHlwZSI6ICJQb2x5Z29uIn0sICJpZCI6ICIxIiwgInByb3BlcnRpZXMiOiB7IklEIjogMi4wLCAiTmFtZSI6ICJGZWRlcnNlZV9JTkVYQUNUIn0sICJ0eXBlIjogIkZlYXR1cmUifV0sICJ0eXBlIjogIkZlYXR1cmVDb2xsZWN0aW9uIn0pOwogICAgICAgIAo8L3NjcmlwdD4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+<p>We can easily show this - see how the lower right and upper left corners are different.
+So let us delete what we do not need.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">del</span> west_32632_INEXACT, north_32632_INEXACT, east_32632_INEXACT, south_32632_INEXACT, aoi_polygon_INEXACT
+gdf_aoi_32632 <span style="color:#f92672">=</span> gdf_aoi_32632<span style="color:#f92672">.</span>drop(<span style="color:#ae81ff">1</span>)
+</code></pre></div><p>With the correct window we new derive a window aligned with the pixels such that the AOI and that the pixels of the raster subset we derive are exactly aligned with the source raster.
+If we would not do that, there would be a small shift between the pixel edges.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">window <span style="color:#f92672">=</span> rasterio<span style="color:#f92672">.</span>windows<span style="color:#f92672">.</span>from_bounds(west_32632, 
+                                      south_32632, 
+                                      east_32632, 
+                                      north_32632, 
+                                      transform<span style="color:#f92672">=</span>meta[<span style="color:#e6db74">&#34;transform&#34;</span>]
+                                     )
+window_aligned <span style="color:#f92672">=</span> rasterio<span style="color:#f92672">.</span>windows<span style="color:#f92672">.</span>Window(col_off<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>floor(window<span style="color:#f92672">.</span>col_off),
+                                         row_off<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>floor(window<span style="color:#f92672">.</span>row_off), 
+                                         width<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>ceil(window<span style="color:#f92672">.</span>width) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, 
+                                         height<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>ceil(window<span style="color:#f92672">.</span>height) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+<span style="color:#75715e"># compare</span>
+pd<span style="color:#f92672">.</span>concat([pd<span style="color:#f92672">.</span>Series(window<span style="color:#f92672">.</span>todict(), name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;window_original&#34;</span>), 
+           pd<span style="color:#f92672">.</span>Series(window_aligned<span style="color:#f92672">.</span>todict(), name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;window_aligned&#34;</span>)], axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>window_original</th>
+      <th>window_aligned</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>col_off</th>
+      <td>2584.554036</td>
+      <td>2584.0</td>
+    </tr>
+    <tr>
+      <th>row_off</th>
+      <td>6757.478236</td>
+      <td>6757.0</td>
+    </tr>
+    <tr>
+      <th>width</th>
+      <td>327.310592</td>
+      <td>329.0</td>
+    </tr>
+    <tr>
+      <th>height</th>
+      <td>146.328742</td>
+      <td>148.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p>Now we can read the data of our AOI directly in Python.
+The code how to safe the data to disc is also there but commented out since we do not want to do this here but with the <code>gdal_translate</code> solution shown below.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># fp_dst = Path(&#34;./data_federsee/dev/&#34;) / (Path(fp).stem + &#34;_AOI_DEV_rasterio.tif&#34;)</span>
+<span style="color:#75715e"># fp_dst.parent.mkdir(exist_ok=True, parents=True)</span>
+
+<span style="color:#66d9ef">with</span> rasterio<span style="color:#f92672">.</span>open(fp) <span style="color:#66d9ef">as</span> src:
+    arr <span style="color:#f92672">=</span> src<span style="color:#f92672">.</span>read(window<span style="color:#f92672">=</span>window_aligned)
+
+    <span style="color:#75715e"># kwargs = src.meta.copy()</span>
+    <span style="color:#75715e"># kwargs.update({</span>
+    <span style="color:#75715e">#     &#39;height&#39;: window_aligned.height,</span>
+    <span style="color:#75715e">#     &#39;width&#39;: window_aligned.width,</span>
+    <span style="color:#75715e">#     &#39;transform&#39;: rasterio.windows.transform(window_aligned, </span>
+    <span style="color:#75715e">#                                             src.transform)})</span>
+
+    <span style="color:#75715e"># with rasterio.open(fp_dst, &#39;w&#39;, **kwargs) as dst:</span>
+    <span style="color:#75715e">#     dst.write(src.read(window=window_aligned))</span>
+    
+<span style="color:#f92672">import</span> seaborn <span style="color:#f92672">as</span> sns
+plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">30</span>,<span style="color:#ae81ff">15</span>))
+plt<span style="color:#f92672">.</span>imshow(arr[<span style="color:#ae81ff">0</span>])
+plt<span style="color:#f92672">.</span>show()
+</code></pre></div><p><img src="/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png" alt="output_26_0.png"></p>
+<h3 id="how-to-download-with-gdal">How to download with <strong>GDAL</strong>?</h3>
+<p>If it is not necessary to directly load the data in Python it might be easier to use teh comman line tool <a href="https://gdal.org/programs/gdal_translate.html"><code>gdal_translate</code></a> to store the raster subset locally.
+For that we need the following parameters.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gdal_translate 
+    <span style="color:#f92672">[</span>-projwin ulx uly lrx lry<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>-projwin_srs srs_def<span style="color:#f92672">]</span>
+    src_dataset dst_dataset
+    
+</code></pre></div><p><strong>Note of caution again:</strong></p>
+<p>As above, by using the AOI in the geographic coordinate system we will get an output raster which does not fully cover the AOI.
+Therefore, we use the AOI in the imagery CRS and expand it for the pixel size of 30 m.</p>
+<p>Let us define a function which creates the GDAL command and optionally runs it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gdal_translate_landsat_pds_c1_l8</span>(scene: str, 
+                                     band: str, 
+                                     gdf_aoi: gpd<span style="color:#f92672">.</span>GeoDataFrame, 
+                                     dstdir: Path <span style="color:#f92672">or</span> str, 
+                                     process: bool<span style="color:#f92672">=</span>False, 
+                                     overwrite: bool<span style="color:#f92672">=</span>False, 
+                                     verbose: bool<span style="color:#f92672">=</span>True):
+    <span style="color:#e6db74">&#34;&#34;&#34;Parse a gdal_translate command to save a subset of a aws landsat 8 pds c1 raster dataset locally.&#34;&#34;&#34;</span>
+    path <span style="color:#f92672">=</span> scene<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">2</span>][:<span style="color:#ae81ff">3</span>]
+    row <span style="color:#f92672">=</span> scene<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;_&#34;</span>)[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">3</span>:]
+    src_dataset <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#34;/vsicurl/http://landsat-pds.s3.amazonaws.com/c1/L8/&#34;</span> \
+                  f<span style="color:#e6db74">&#34;{path}/{row}/{scene}/{scene}_{band}.TIF&#34;</span>
+    dst_dataset <span style="color:#f92672">=</span> Path(dstdir) <span style="color:#f92672">/</span> scene <span style="color:#f92672">/</span> (f<span style="color:#e6db74">&#34;{scene}_{band}.TIF&#34;</span>)
+    dst_dataset<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>mkdir(exist_ok<span style="color:#f92672">=</span>True, parents<span style="color:#f92672">=</span>True)
+    
+    <span style="color:#75715e"># in case the aoi gdf has more features we use the bounding box embracing all</span>
+    projwin <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat([gdf_aoi<span style="color:#f92672">.</span>bounds[[<span style="color:#e6db74">&#34;minx&#34;</span>, <span style="color:#e6db74">&#34;miny&#34;</span>]]<span style="color:#f92672">.</span>min(), 
+                         gdf_aoi<span style="color:#f92672">.</span>bounds[[<span style="color:#e6db74">&#34;maxx&#34;</span>, <span style="color:#e6db74">&#34;maxy&#34;</span>]]<span style="color:#f92672">.</span>max()]) \
+              <span style="color:#f92672">.</span>rename({<span style="color:#e6db74">&#34;minx&#34;</span>: <span style="color:#e6db74">&#34;ulx&#34;</span>,
+                       <span style="color:#e6db74">&#34;miny&#34;</span>: <span style="color:#e6db74">&#34;lry&#34;</span>,
+                       <span style="color:#e6db74">&#34;maxx&#34;</span>: <span style="color:#e6db74">&#34;lrx&#34;</span>,
+                       <span style="color:#e6db74">&#34;maxy&#34;</span>: <span style="color:#e6db74">&#34;uly&#34;</span>})
+
+    cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gdal_translate &#34;</span> \
+          f<span style="color:#e6db74">&#34;-projwin {projwin[&#39;ulx&#39;]} {projwin[&#39;uly&#39;]} {projwin[&#39;lrx&#39;] + 30} {projwin[&#39;lry&#39;] - 30} &#34;</span> \
+          f<span style="color:#e6db74">&#34;{str(src_dataset)} &#34;</span> \
+          f<span style="color:#e6db74">&#34;{str(dst_dataset)}&#34;</span>
+    exit_code <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>nan
+    <span style="color:#66d9ef">if</span> process:
+        <span style="color:#66d9ef">if</span> overwrite <span style="color:#f92672">or</span> <span style="color:#f92672">not</span> dst_dataset<span style="color:#f92672">.</span>exists():
+            <span style="color:#66d9ef">if</span> verbose:
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;PROCESSING&#34;</span>)
+            exit_code <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>check_call(cmd, shell<span style="color:#f92672">=</span>True) 
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#66d9ef">if</span> verbose:
+                <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;Processing skipped. File exists: {str(dst_dataset)}&#34;</span>)
+                <span style="color:#66d9ef">print</span>(cmd)
+    <span style="color:#66d9ef">return</span> cmd, exit_code
+</code></pre></div><p>An example command looks as follows:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cmd, exit_code <span style="color:#f92672">=</span> gdal_translate_landsat_pds_c1_l8(scene<span style="color:#f92672">=</span>scenes[<span style="color:#ae81ff">0</span>], 
+                                                  band<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;B5&#34;</span>, 
+                                                  gdf_aoi<span style="color:#f92672">=</span>gdf_aoi_32632, 
+                                                  dstdir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./data_federsee/dev&#34;</span>,
+                                                  process<span style="color:#f92672">=</span>False,
+                                                  overwrite<span style="color:#f92672">=</span>False,
+                                                  verbose<span style="color:#f92672">=</span>True)
+cmd
+</code></pre></div><pre><code>'gdal_translate -projwin 540421.6210704312 5328390.652911871 550270.9388222749 5323970.790656615 /vsicurl/http://landsat-pds.s3.amazonaws.com/c1/L8/194/026/LC08_L1TP_194026_20190412_20190412_01_RT/LC08_L1TP_194026_20190412_20190412_01_RT_B5.TIF data_federsee/dev/LC08_L1TP_194026_20190412_20190412_01_RT/LC08_L1TP_194026_20190412_20190412_01_RT_B5.TIF'
+</code></pre>
+<h2 id="download">Download</h2>
+<p>Remember the task - we want to download the bands 2, 3, 4, 5, 6 and 7 of the three scenes above but only the parts that overlap with the AOI.</p>
+<p>Now we have everything together such that this task can be solved by a very simple for-loop.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> i, scene <span style="color:#f92672">in</span> enumerate(scenes):
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;{scene} - {i+1} / {len(scenes)}&#34;</span>)
+    <span style="color:#66d9ef">for</span> band <span style="color:#f92672">in</span> tqdm(bands, total<span style="color:#f92672">=</span>len(bands)):
+        cmd, exit_code <span style="color:#f92672">=</span> gdal_translate_landsat_pds_c1_l8(scene<span style="color:#f92672">=</span>scene, 
+                                                          band<span style="color:#f92672">=</span>band, 
+                                                          gdf_aoi<span style="color:#f92672">=</span>gdf_aoi_32632, 
+                                                          dstdir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./data_federsee/l8_aoi&#34;</span>,
+                                                          process<span style="color:#f92672">=</span>True,
+                                                          overwrite<span style="color:#f92672">=</span>False,
+                                                          verbose<span style="color:#f92672">=</span>False)        
+</code></pre></div><pre><code>  0%|          | 0/7 [00:00&lt;?, ?it/s]
+
+LC08_L1TP_194026_20190412_20190412_01_RT - 1 / 3
+
+
+100%|██████████| 7/7 [00:47&lt;00:00,  6.79s/it]
+  0%|          | 0/7 [00:00&lt;?, ?it/s]
+
+LC08_L1TP_194026_20190818_20190818_01_RT - 2 / 3
+
+
+100%|██████████| 7/7 [00:48&lt;00:00,  6.91s/it]
+  0%|          | 0/7 [00:00&lt;?, ?it/s]
+
+LC08_L1TP_194026_20190903_20190903_01_RT - 3 / 3
+
+
+100%|██████████| 7/7 [00:48&lt;00:00,  7.03s/it]
+</code></pre>
+<h2 id="the-end">The end</h2>
+<p>Great, we have downloaded the first ingredient required for the classification task to be solve in the third post of this series.
+In the next post we will get some georeferenced land use and land cover labels for the same area from OpenStreetMap.</p>
+<p>At the same time I have learned some things about Cloud Optimized GeoTIFFs.
+Particularly that it can save a lot of web traffic if we are only interested in a small part of raster datasets that cover much larger footprints.
+For example here we ended up downloadint 2MB.
+If we hat to downloaded the full three Landsat scene that would have summed up to around 3 x 900 MB and quite some more lines of code to get the data subset we wanted.</p>
+<p>So in my opinion Cloud Optimized GeoTIFF is really an amazing raster format which we will see and use more and more in the future.
+In fact, the <a href="https://www.usgs.gov/land-resources/nli/landsat/landsat-collection-2?qt-science_support_page_related_con=1#qt-science_support_page_related_con">Collection 2 Level-2 Landsat data will be realeased in COG format</a> by the U.S. Geological Survey (USGS).
+Which is great.</p>
+<h2 id="feedback">Feedback</h2>
+<p>You are more than welcome to leave a comment if you have some thoughts you like to share.</p>
+<p>I would love to hear what you liked, what you missed, where you agree or disagree, what you would solve in a different way or any other thoughts.</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/remote-sensing/">Remote Sensing</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/cloud-optimized-geotiff/">Cloud Optimized GeoTIFF</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/landsat/">Landsat</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/python/">Python</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/rasterio/">rasterio</a></li>
+        
+          <li><a class="article-terms-link" href="/benmack.github.io/categories/gdal/">GDAL</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      <li>None</li>
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/" class="button left"><span>Satellite imagery classification - II</span></a>
+    
+    
+      <a href="benmack.github.io/blog/2019-09-28-1_yay/" class="button right"><span>YAY...</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent Posts</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/" class="image" style="--bg-image: url('benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png');">
+    <img src="benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png" alt="output_30_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/">Satellite imagery classification - III</a></h2>
+          <time class="published" datetime="2020-01-06 00:00:00 &#43;0000 UTC">January 6, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/" class="image" style="--bg-image: url('benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png');">
+    <img src="benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png" alt="output_39_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/">Satellite imagery classification - II</a></h2>
+          <time class="published" datetime="2019-10-26 00:00:00 &#43;0000 UTC">October 26, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/" class="image" style="--bg-image: url('/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png');">
+    <img class="stretchV" src="/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png" alt="output_26_0.png">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">Satellite imagery classification - I</a></h2>
+          <time class="published" datetime="2019-09-29 00:00:00 &#43;0000 UTC">September 29, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="benmack.github.io/blog/2019-09-28-1_yay/" class="image" style="--bg-image: url('benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG');">
+    <img src="benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG" alt="2017-06-26_bike_4000x1250.JPG">
+  </a>
+        <header>
+          <h2><a href="benmack.github.io/blog/2019-09-28-1_yay/">YAY...</a></h2>
+          <time class="published" datetime="2019-09-28 00:00:00 &#43;0000 UTC">September 28, 2019</time>
+        </header>
+      </article>
+      
+      
+    </section>
+  
+
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>About</h1>
+      </header>
+      <p>Mini Autobiography</p>
+      <footer>
+        <a href="/benmack.github.io/about" class="button">Learn More</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Ben&#39;s Blog
+      <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.68.3' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/benmack.github.io/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/benmack.github.io/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/benmack.github.io/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Ben&#39;s Blog</title>
+    <link>benmack.github.io/categories/python/</link>
+    <description>Recent content in Python on Ben&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 06 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="benmack.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Satellite imagery classification - III</title>
+      <link>benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</link>
+      <pubDate>Mon, 06 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</guid>
+      <description>Introduction Context and goal This is the third and last part of a blog post series about using remote sensing data to classify the earth&amp;rsquo;s surface. In this post we will finally walk through the typical steps it takes to classify remote sensing images with a supervised classifier to derive a land use/land cover map.
+We will make use of the remote sensing data from the first part of the series and the OpenStreetMap (OSM) data from the second part of the series.</description>
+    </item>
+    
+    <item>
+      <title>Satellite imagery classification - II</title>
+      <link>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</link>
+      <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>benmack.github.io/blog/2019-10-26-1_federsee-blog-series_part-2_osm/</guid>
+      <description>Context and Content This is the second part of a three parts series about using remote sensing data to classify the earth&amp;rsquo;s surface. Please read the first part of the series if you are interested in an introduction to the post series and / or in the first part where we downloaded parts of Landsat scenes by leveraging the Cloud Optimized GeoTIFF format.
+In this part, after a short introduction to OpenStreetMap (OSM), we will download and prepare land use and land cover data sourced from OSM.</description>
+    </item>
+    
+    <item>
+      <title>Satellite imagery classification - I</title>
+      <link>benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</link>
+      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>benmack.github.io/blog/2019-09-29-1_federsee-blog-series_part-1_cog/</guid>
+      <description>Introduction to the post series Outline This is a three parts series about classification of remote sensing images. Remote sensing images are already beautiful enough to only look at, but they can also be used for mapping the earth&amp;rsquo;s surface. When the task is to map categorical classes, such as forest, water, meadow, farmland, residential area, etc. the task can be solved by classification, often more specifically called land use and/or land cover classification.</description>
+    </item>
+    
+  </channel>
+</rss>
