@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Comparing USGS ShakeMap versions - Ben&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.68.3" /><meta property="og:site_name" content="Ben&#39;s Blog">
+  <meta property="og:title" content="Comparing USGS ShakeMap versions">
+  <meta property="og:description" content="The M 7.1 - 72 km ENE of Namie, Japan earthquake.">
+  <meta property="description" content="The M 7.1 - 72 km ENE of Namie, Japan earthquake.">
+  <meta property="og:url" content="https://benmack.github.io/blog/2021-02-27-1_comparing_usgs_shakemap_versions/">
+  <meta property="og:type" content="article">
+  
+    
+      <meta property="og:image" content="https://benmack.github.io/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png">
+      <meta property="og:image:alt" content="output_26_0.png">
+    
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          Blog
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fa fa-home'></i> Home</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/projects/" class="nav link"><i class='far fa-id-card'></i> Projects</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> About</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Comparing%20USGS%20ShakeMap%20versions&amp;url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f&amp;title=Comparing%20USGS%20ShakeMap%20versions" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f&amp;title=Comparing%20USGS%20ShakeMap%20versions" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://benmack.github.io/img/intro-pic/180929_genova_me.jpg" class="circle" width="100" alt="intro-pic" /></a>
+  <header>
+    <h1>Ben's Blog</h1>
+  </header>
+  <main>
+    <p>... | data | geospatial | python | remote sensing | ...</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/blog/2021-02-27-1_comparing_usgs_shakemap_versions/">Comparing USGS ShakeMap versions</a></h2>
+    
+    
+      <p>The M 7.1 - 72 km ENE of Namie, Japan earthquake.</p>
+    
+  </div>
+  <div class="meta">
+    <time datetime="2021-02-27 00:00:00 &#43;0000 UTC">February 27, 2021</time>
+    
+    <p>7-Minute Read</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Comparing%20USGS%20ShakeMap%20versions&amp;url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f&amp;title=Comparing%20USGS%20ShakeMap%20versions" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f&amp;title=Comparing%20USGS%20ShakeMap%20versions" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fbenmack.github.io%2fblog%2f2021-02-27-1_comparing_usgs_shakemap_versions%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      <a href="/blog/2021-02-27-1_comparing_usgs_shakemap_versions/" class="image" style="--bg-image: url('https://benmack.github.io/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png');">
+    <img class="stretchV" src="https://benmack.github.io/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png" alt="output_26_0.png">
+  </a>
+      <h1 id="overview">Overview</h1>
+<p>Recently, I came across the question if and how it is possible to download superseded versions of <a href="https://earthquake.usgs.gov/data/shakemap/">ShakeMaps</a> distributed by the <a href="https://www.usgs.gov/natural-hazards/earthquake-hazards">USGS Earthquake Hazards</a> program.
+This post comprises what I encountered on my first walk through the rich resources offered by the USGS.</p>
+<p>In a nutshell, we will</p>
+<ul>
+<li>use the <a href="https://github.com/usgs/libcomcat">libcomcat</a> Python library to
+<ul>
+<li>query the history of product submissions (e.g. ShakeMaps) related to an event</li>
+<li>download different versions of a product (here the raster.zip)</li>
+</ul>
+</li>
+<li>reprocess rasters to have common extend and pixel alignment</li>
+<li>visualize how the <a href="https://www.usgs.gov/natural-hazards/earthquake-hazards/science/modified-mercalli-intensity-scale?qt-science_center_objects=0#qt-science_center_objects">Modified Mercalli Intensity</a> (MMI) changes over different product versions for a given event.</li>
+</ul>
+<p>We will walk through these steps using the <a href="https://earthquake.usgs.gov/earthquakes/eventpage/us6000dher/executive"><em>M 7.1 - 72 km ENE of Namie, Japan</em></a> event.</p>
+<h1 id="data-and-tools">Data and Tools</h1>
+<p>The <a href="https://www.usgs.gov/natural-hazards/earthquake-hazards/data-tools">USGS Earthquake Hazards Program &gt; Data and Tools</a> webpage provides an overview of available data and different ways to access them.
+The <a href="https://earthquake.usgs.gov/earthquakes/feed/">Real-time Notifications, Feeds, and Web Services</a> webpage lists different ways to access real-time notifications as well as some links for developers.</p>
+<p>We can find a link to the web service <a href="https://earthquake.usgs.gov/fdsnws/event/1/">API Documentation - Earthquake Catalog</a> there.
+But we can also click our way through the <a href="https://github.com/usgs/devcorner">Developers Corner</a> to the <a href="https://github.com/usgs/libcomcat">Python libcomcat</a> project that provides <em>a Python equivalent to the ANSS ComCat search API</em>, i.e. the <a href="https://earthquake.usgs.gov/fdsnws/event/1/">API Documentation - Earthquake Catalog</a>.</p>
+<p>In this post, we will use the <a href="https://github.com/usgs/libcomcat">libcomcat</a> Python API.
+The <a href="https://github.com/usgs/libcomcat">Python libcomcat</a> <em>README.md</em> contains links to the API Documentation, the Command Line Interface Documentation, and several great Jupyter notebooks that make it easy to get started with the API.
+Most of the code snippets in this post are taken from there.</p>
+<h1 id="libraries">Libraries</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> timezone
+<span style="color:#f92672">from</span> libcomcat.dataframes <span style="color:#f92672">import</span> get_history_data_frame, split_history_frame
+<span style="color:#f92672">from</span> libcomcat.search <span style="color:#f92672">import</span> get_event_by_id
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> pathlib <span style="color:#f92672">import</span> Path
+<span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
+<span style="color:#f92672">import</span> rasterio
+<span style="color:#f92672">from</span> rasterio.warp <span style="color:#f92672">import</span> reproject, Resampling
+<span style="color:#f92672">import</span> zipfile
+
+pd<span style="color:#f92672">.</span>set_option(<span style="color:#e6db74">&#39;display.max_columns&#39;</span>, None)
+</code></pre></div><h1 id="event-details">Event Details</h1>
+<p>Assume we already know the event ID of an earthquake of interest.
+Then we can get a <code>DetailEvent</code> instance for it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">quake_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;us6000dher&#39;</span>
+
+event <span style="color:#f92672">=</span> get_event_by_id(quake_id, includesuperseded<span style="color:#f92672">=</span>True)
+event
+</code></pre></div><pre><code>us6000dher 2021-02-13 14:07:50.397000 (37.745,141.749) 49.9 km M7.1
+</code></pre>
+<p>With this object, we can derive the history of the event&rsquo;s products in a pandas data frame with the <code>get_history_data_frame</code> function.
+We need to create the object with <code>includesuperseded=True</code> to get all the versions of the event&rsquo;s product (<a href="https://github.com/usgs/libcomcat/blob/master/docs/api.md#history-dataframe">History Dataframe</a>).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_products, event <span style="color:#f92672">=</span> get_history_data_frame(event)
+display(df_products<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">3</span>))
+df_products[<span style="color:#e6db74">&#39;Product&#39;</span>]<span style="color:#f92672">.</span>value_counts()
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Update Time</th>
+      <th>Product</th>
+      <th>Authoritative Event ID</th>
+      <th>Code</th>
+      <th>Associated</th>
+      <th>Product Source</th>
+      <th>Product Version</th>
+      <th>Elapsed (min)</th>
+      <th>URL</th>
+      <th>Comment</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>313</th>
+      <td>2021-02-13 14:19:04.892</td>
+      <td>origin</td>
+      <td>us6000dher</td>
+      <td>pt21044000</td>
+      <td>True</td>
+      <td>pt</td>
+      <td>1</td>
+      <td>11.2</td>
+      <td>https://earthquake.usgs.gov/archive/product/or...</td>
+      <td></td>
+      <td>Magnitude# 7.1|Time# 2021-02-13 14:07:00 |Time...</td>
+    </tr>
+    <tr>
+      <th>311</th>
+      <td>2021-02-13 14:20:10.768</td>
+      <td>origin</td>
+      <td>us6000dher</td>
+      <td>at00qoh0l1</td>
+      <td>True</td>
+      <td>at</td>
+      <td>1</td>
+      <td>12.3</td>
+      <td>https://earthquake.usgs.gov/archive/product/or...</td>
+      <td></td>
+      <td>Magnitude# 7.1|Time# 2021-02-13 14:07:52 |Time...</td>
+    </tr>
+    <tr>
+      <th>312</th>
+      <td>2021-02-13 14:20:10.774</td>
+      <td>origin</td>
+      <td>us6000dher</td>
+      <td>at00qoh0l1</td>
+      <td>True</td>
+      <td>at</td>
+      <td>2</td>
+      <td>12.3</td>
+      <td>https://earthquake.usgs.gov/archive/product/or...</td>
+      <td></td>
+      <td>Magnitude# 7.1|Time# 2021-02-13 14:07:52 |Time...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<pre><code>dyfi              285
+moment-tensor      10
+ground-failure      8
+losspager           7
+shakemap            7
+origin              7
+phase-data          4
+finite-fault        1
+Name: Product, dtype: int64
+</code></pre>
+<p>The value counts on the <code>Products</code> column show that there are seven ShakeMap versions.
+We can subset the dataset by hand or a dedicated helper function.
+The helper function will subset the data, reset the row index and change the columns of the data frame.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">df_shakemap <span style="color:#f92672">=</span> split_history_frame(df_products, product<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;shakemap&#39;</span>)
+df_shakemap
+</code></pre></div><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Update Time</th>
+      <th>Product</th>
+      <th>Authoritative Event ID</th>
+      <th>Code</th>
+      <th>Associated</th>
+      <th>Product Source</th>
+      <th>Product Version</th>
+      <th>Elapsed (min)</th>
+      <th>URL</th>
+      <th>Comment</th>
+      <th>MaxMMI</th>
+      <th>Instrumented</th>
+      <th>DYFI</th>
+      <th>Fault</th>
+      <th>GMPE</th>
+      <th>Mag</th>
+      <th>Depth</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-02-13 14:28:21.006</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>1</td>
+      <td>20.5</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>5.2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>[AtkinsonBoore2003SInter],[ZhaoEtAl2016SInter]...</td>
+      <td>7.0</td>
+      <td>54.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-02-13 15:10:42.406</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>2</td>
+      <td>62.9</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>6.4</td>
+      <td>4.0</td>
+      <td>23.0</td>
+      <td>NaN</td>
+      <td>[AtkinsonBoore2003SInter],[ZhaoEtAl2016SInter]...</td>
+      <td>7.0</td>
+      <td>54.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-02-13 16:11:24.776</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>3</td>
+      <td>123.6</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>6.5</td>
+      <td>4.0</td>
+      <td>36.0</td>
+      <td>NaN</td>
+      <td>[AtkinsonBoore2003SInter],[ZhaoEtAl2016SInter]...</td>
+      <td>7.1</td>
+      <td>50.6</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-02-13 22:11:55.217</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>4</td>
+      <td>484.1</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>43.0</td>
+      <td>NaN</td>
+      <td>[AbrahamsonEtAl2014],[BooreEtAl2014],[Campbell...</td>
+      <td>7.1</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-02-14 00:17:56.940</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>5</td>
+      <td>610.1</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>7.6</td>
+      <td>589.0</td>
+      <td>43.0</td>
+      <td>NaN</td>
+      <td>[AbrahamsonEtAl2014],[BooreEtAl2014],[Campbell...</td>
+      <td>7.1</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-02-14 14:12:31.505</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>6</td>
+      <td>1444.7</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>8.0</td>
+      <td>586.0</td>
+      <td>49.0</td>
+      <td>NaN</td>
+      <td>[AbrahamsonEtAl2014],[BooreEtAl2014],[Campbell...</td>
+      <td>7.1</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2021-02-14 22:08:57.989</td>
+      <td>shakemap</td>
+      <td>us6000dher</td>
+      <td>us6000dher</td>
+      <td>True</td>
+      <td>us</td>
+      <td>7</td>
+      <td>1921.1</td>
+      <td>https://earthquake.usgs.gov/archive/product/sh...</td>
+      <td></td>
+      <td>8.0</td>
+      <td>586.0</td>
+      <td>50.0</td>
+      <td>NaN</td>
+      <td>[AbrahamsonEtAl2014],[BooreEtAl2014],[Campbell...</td>
+      <td>7.1</td>
+      <td>49.9</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<h1 id="shakemap-product">ShakeMap Product</h1>
+<h2 id="inspect-contents">Inspect contents</h2>
+<p>The ShakeMap product comprises several contents or files.
+The <code>Product</code> class instance has methods that make it easy to list and download specific contents or files.
+Let us look at the <code>Product</code> instance of the <em>preferred</em> version of the ShakeMap product.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">products <span style="color:#f92672">=</span> event<span style="color:#f92672">.</span>getProducts(<span style="color:#e6db74">&#39;shakemap&#39;</span>, version<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;preferred&#39;</span>)
+<span style="color:#66d9ef">print</span>(products) <span style="color:#75715e"># list of products but we only expect one due to version=&#39;preferred&#39;</span>
+
+product <span style="color:#f92672">=</span> products[<span style="color:#ae81ff">0</span>]
+<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;Contents: {product.contents}&#39;</span>)
+
+</code></pre></div><pre><code>[Product shakemap from us updated 2021-02-13 15:10:42.406000 containing 58 content files.]
+Contents: ['contents.xml', 'download/attenuation_curves.json', 'download/cont_mi.json', 'download/cont_mmi.json', 'download/cont_pga.json', 'download/cont_pgv.json', 'download/cont_psa0p3.json', 'download/cont_psa1p0.json', 'download/cont_psa3p0.json', 'download/coverage_mmi_high_res.covjson', 'download/coverage_mmi_low_res.covjson', 'download/coverage_mmi_medium_res.covjson', 'download/coverage_pga_high_res.covjson', 'download/coverage_pga_low_res.covjson', 'download/coverage_pga_medium_res.covjson', 'download/coverage_pgv_high_res.covjson', 'download/coverage_pgv_low_res.covjson', 'download/coverage_pgv_medium_res.covjson', 'download/coverage_psa0p3_high_res.covjson', 'download/coverage_psa0p3_low_res.covjson', 'download/coverage_psa0p3_medium_res.covjson', 'download/coverage_psa1p0_high_res.covjson', 'download/coverage_psa1p0_low_res.covjson', 'download/coverage_psa1p0_medium_res.covjson', 'download/coverage_psa3p0_high_res.covjson', 'download/coverage_psa3p0_low_res.covjson', 'download/coverage_psa3p0_medium_res.covjson', 'download/grid.xml', 'download/info.json', 'download/intensity.jpg', 'download/intensity.pdf', 'download/intensity_overlay.png', 'download/intensity_overlay.pngw', 'download/mmi_legend.png', 'download/mmi_regr.png', 'download/pga.jpg', 'download/pga.pdf', 'download/pga_regr.png', 'download/pgv.jpg', 'download/pgv.pdf', 'download/pgv_regr.png', 'download/pin-thumbnail.png', 'download/psa0p3.jpg', 'download/psa0p3.pdf', 'download/psa0p3_regr.png', 'download/psa1p0.jpg', 'download/psa1p0.pdf', 'download/psa1p0_regr.png', 'download/psa3p0.jpg', 'download/psa3p0.pdf', 'download/psa3p0_regr.png', 'download/raster.zip', 'download/rupture.json', 'download/shake_result.hdf', 'download/shakemap.kmz', 'download/shape.zip', 'download/stationlist.json', 'download/uncertainty.xml']
+</code></pre>
+<p>This list shows 58 files associated with a specific version of the ShakeMap product.
+These can also be found and downloaded under the respective <a href="https://earthquake.usgs.gov/earthquakes/eventpage/us6000dher/executive">event page</a>.</p>
+<h2 id="download-content">Download content</h2>
+<p>Now, we will download the <em>raster.zip</em>.
+Since we will download different versions, we build a destination directory containing the product version.
+Then we extract the zip file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">path_zip <span style="color:#f92672">=</span> Path(f<span style="color:#e6db74">&#39;data/{quake_id}_{product.source}_{product.version:02d}_raster.zip&#39;</span>)
+path_zip<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>mkdir(parents<span style="color:#f92672">=</span>True, exist_ok<span style="color:#f92672">=</span>True)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Zip file local:&#39;</span>, path_zip)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Source URL:&#39;</span>)
+<span style="color:#66d9ef">print</span>(product<span style="color:#f92672">.</span>getContent(<span style="color:#e6db74">&#39;raster.zip&#39;</span>, path_zip))
+
+<span style="color:#66d9ef">with</span> zipfile<span style="color:#f92672">.</span>ZipFile(path_zip, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> zip_ref:
+    zip_ref<span style="color:#f92672">.</span>extractall(path_zip<span style="color:#f92672">.</span>parent <span style="color:#f92672">/</span> path_zip<span style="color:#f92672">.</span>stem)
+</code></pre></div><pre><code>Zip file local: data/us6000dher_us_02_raster.zip
+Source URL:
+https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613229042406/download/raster.zip
+</code></pre>
+<p>Now we can do the same thing for all versions.</p>
+<p>We could also do this via the CLI with</p>
+<pre><code>getproduct shakemap raster.zip -i us6000dher --get-version all
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">download_and_extract_raster</span>(product, quake_id, basedir, overwrite<span style="color:#f92672">=</span>False):
+    
+    path_zip <span style="color:#f92672">=</span> Path(f<span style="color:#e6db74">&#39;{str(basedir)}/{quake_id}_{product.source}_{product.version:02d}_raster.zip&#39;</span>)
+    path_zip<span style="color:#f92672">.</span>parent<span style="color:#f92672">.</span>mkdir(parents<span style="color:#f92672">=</span>True, exist_ok<span style="color:#f92672">=</span>True)
+    
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Zip file local:&#39;</span>, path_zip)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> path_zip<span style="color:#f92672">.</span>exists() <span style="color:#f92672">or</span> overwrite:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Source URL:&#39;</span>, 
+              product<span style="color:#f92672">.</span>getContent(<span style="color:#e6db74">&#39;raster.zip&#39;</span>, path_zip))
+    
+    <span style="color:#66d9ef">with</span> zipfile<span style="color:#f92672">.</span>ZipFile(path_zip, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> zip_ref:
+        zip_ref<span style="color:#f92672">.</span>extractall(path_zip<span style="color:#f92672">.</span>parent <span style="color:#f92672">/</span> path_zip<span style="color:#f92672">.</span>stem)
+
+<span style="color:#66d9ef">for</span> product <span style="color:#f92672">in</span> event<span style="color:#f92672">.</span>getProducts(<span style="color:#e6db74">&#39;shakemap&#39;</span>, version<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;all&#39;</span>):
+    <span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#39;****** {product.version} ******&#39;</span>)
+    download_and_extract_raster(product, quake_id, basedir<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;data&#39;</span>, overwrite<span style="color:#f92672">=</span>False)
+</code></pre></div><pre><code>****** 1 ******
+Zip file local: data/us6000dher_us_01_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613226501006/download/raster.zip
+****** 2 ******
+Zip file local: data/us6000dher_us_02_raster.zip
+****** 3 ******
+Zip file local: data/us6000dher_us_03_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613232684776/download/raster.zip
+****** 4 ******
+Zip file local: data/us6000dher_us_04_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613254315217/download/raster.zip
+****** 5 ******
+Zip file local: data/us6000dher_us_05_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613261876940/download/raster.zip
+****** 6 ******
+Zip file local: data/us6000dher_us_06_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613311951505/download/raster.zip
+****** 7 ******
+Zip file local: data/us6000dher_us_07_raster.zip
+Source URL: https://earthquake.usgs.gov/archive/product/shakemap/us6000dher/us/1613340537989/download/raster.zip
+</code></pre>
+<p>With the <code>update_time</code> we can generate the number in the URL leading to the respective versions.
+For example, in the case of the last product we downloaded:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">str(product<span style="color:#f92672">.</span>update_time<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>timezone<span style="color:#f92672">.</span>utc)<span style="color:#f92672">.</span>timestamp())<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;.&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>)
+</code></pre></div><pre><code>'1613340537989'
+</code></pre>
+<h1 id="reproject-and-stack-rasters">Reproject and stack rasters</h1>
+<p>For intended visualization, we need the different rasters to fit.
+To see if this is the case, we can investigate the metadata of different raster files.</p>
+<p>First, let us get a list of files we want to compare and see if we need to reproject them.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">paths_mmi <span style="color:#f92672">=</span> list(Path(<span style="color:#e6db74">&#39;data&#39;</span>)<span style="color:#f92672">.</span>rglob(<span style="color:#e6db74">&#39;mmi_mean.flt&#39;</span>))
+paths_mmi<span style="color:#f92672">.</span>sort()
+paths_mmi
+</code></pre></div><pre><code>[PosixPath('data/us6000dher_us_01_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_02_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_03_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_04_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_05_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_06_raster/mmi_mean.flt'),
+ PosixPath('data/us6000dher_us_07_raster/mmi_mean.flt')]
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">rasterio<span style="color:#f92672">.</span>open(paths_mmi[<span style="color:#ae81ff">0</span>])<span style="color:#f92672">.</span>meta
+</code></pre></div><pre><code>{'driver': 'EHdr',
+ 'dtype': 'float32',
+ 'nodata': 999.0,
+ 'width': 498,
+ 'height': 394,
+ 'count': 1,
+ 'crs': None,
+ 'transform': Affine(0.016666666666666666, 0.0, 138.025,
+        0.0, -0.016666666666666666, 40.891666666666666)}
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">rasterio<span style="color:#f92672">.</span>open(paths_mmi[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])<span style="color:#f92672">.</span>meta
+</code></pre></div><pre><code>{'driver': 'EHdr',
+ 'dtype': 'float32',
+ 'nodata': 999.0,
+ 'width': 511,
+ 'height': 427,
+ 'count': 1,
+ 'crs': None,
+ 'transform': Affine(0.016666666666666666, 0.0, 135.49166666666667,
+        0.0, -0.016666666666666666, 41.208333333333336)}
+</code></pre>
+<p>The rasters of the different versions do not match, as we can see from the width, height, and transform values.
+Therefore reprojection is necessary.
+We will use the last version to define our template or destination array and reproject all the other versions to match it.</p>
+<p>The implementation here follows <a href="https://rasterio.readthedocs.io/en/latest/topics/reproject.html#reprojection">rasterio&rsquo;s Reprojection documentation</a>.
+We directly reproject raster values loaded into a numpy array object.
+The documentation also describes and references ways to reproject raster files.</p>
+<p>Let us first configure the destination array:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mmi_template <span style="color:#f92672">=</span> rasterio<span style="color:#f92672">.</span>open(paths_mmi[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+
+dst_shape <span style="color:#f92672">=</span> mmi_template<span style="color:#f92672">.</span>shape
+dst_transform <span style="color:#f92672">=</span> mmi_template<span style="color:#f92672">.</span>transform
+dst_crs <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;init&#39;</span>: <span style="color:#e6db74">&#39;EPSG:4326&#39;</span>}
+destination <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>zeros(mmi_template<span style="color:#f92672">.</span>shape, mmi_template<span style="color:#f92672">.</span>meta[<span style="color:#e6db74">&#39;dtype&#39;</span>])
+</code></pre></div><p>With that, we can reproject the data of the other versions to match it and collect all versions in a three-dimensional array.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mmi_mean_version_stack <span style="color:#f92672">=</span> []
+
+<span style="color:#66d9ef">for</span> i, path_mmi_i <span style="color:#f92672">in</span> enumerate(paths_mmi[:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]):
+    mmi_i <span style="color:#f92672">=</span> rasterio<span style="color:#f92672">.</span>open(path_mmi_i)
+    src_shape <span style="color:#f92672">=</span> mmi_i<span style="color:#f92672">.</span>shape
+    src_transform <span style="color:#f92672">=</span> mmi_i<span style="color:#f92672">.</span>transform
+    src_crs <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;init&#39;</span>: <span style="color:#e6db74">&#39;EPSG:4326&#39;</span>}
+    source <span style="color:#f92672">=</span> mmi_i<span style="color:#f92672">.</span>read()
+
+    mmi_mean_version_stack<span style="color:#f92672">.</span>append(
+        reproject(
+            source,
+            destination,
+            src_transform<span style="color:#f92672">=</span>src_transform,
+            src_crs<span style="color:#f92672">=</span>src_crs,
+            dst_transform<span style="color:#f92672">=</span>dst_transform,
+            dst_crs<span style="color:#f92672">=</span>dst_crs,
+            resampling<span style="color:#f92672">=</span>Resampling<span style="color:#f92672">.</span>nearest)[<span style="color:#ae81ff">0</span>]  <span style="color:#75715e"># returns tuple (arrray(...), Affine(...))</span>
+    )
+mmi_mean_version_stack<span style="color:#f92672">.</span>append(mmi_template<span style="color:#f92672">.</span>read()[<span style="color:#ae81ff">0</span>, :, :])
+mmi_mean_version_stack <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>stack(mmi_mean_version_stack, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+
+mmi_mean_version_stack<span style="color:#f92672">.</span>shape
+</code></pre></div><pre><code>(427, 511, 7)
+</code></pre>
+<h1 id="visual-comparison-of-two-shakemap-versions">Visual comparison of two ShakeMap versions</h1>
+<p>Finally, we have the different raster versions in a format that allows us to easily analyze how ShakeMap versions differ.</p>
+<p>For example, the following plot shows the difference between the first and the last versions of <em>mmi_mean</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, axes <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">8</span>))
+
+diff_v7v1 <span style="color:#f92672">=</span> mmi_mean_version_stack[:, :, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> mmi_mean_version_stack[:, :, <span style="color:#ae81ff">0</span>]
+
+img1 <span style="color:#f92672">=</span> axes<span style="color:#f92672">.</span>imshow(
+    diff_v7v1, 
+    cmap <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;RdBu&#39;</span>, 
+    vmin<span style="color:#f92672">=-</span><span style="color:#ae81ff">1.3</span>,
+    vmax<span style="color:#f92672">=</span><span style="color:#ae81ff">1.3</span>,
+    interpolation <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;nearest&#39;</span>, 
+    origin <span style="color:#f92672">=</span><span style="color:#e6db74">&#39;lower&#39;</span>)
+axes<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Difference of mmi_mean versions 7 and 1 &#39;</span>)
+axes<span style="color:#f92672">.</span>axis(<span style="color:#e6db74">&#39;off&#39;</span>)
+cbar <span style="color:#f92672">=</span> fig<span style="color:#f92672">.</span>colorbar(img1)
+</code></pre></div><p><img src="/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png" alt="output_26_0.png"></p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/python/">Python</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      <li>None</li>
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+    
+      <a href="/blog/2020-01-06-1_federsee-blog-series_part-3_clf/" class="button right"><span>Satellite imagery classification - III</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent Posts</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/2021-02-27-1_comparing_usgs_shakemap_versions/" class="image" style="--bg-image: url('https://benmack.github.io/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png');">
+    <img class="stretchV" src="https://benmack.github.io/img/blog/2021-02-27-1_comparing_usgs_shakemap_versions/output_26_0.png" alt="output_26_0.png">
+  </a>
+        <header>
+          <h2><a href="/blog/2021-02-27-1_comparing_usgs_shakemap_versions/">Comparing USGS ShakeMap versions</a></h2>
+          <time class="published" datetime="2021-02-27 00:00:00 &#43;0000 UTC">February 27, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2020-01-06-1_federsee-blog-series_part-3_clf/" class="image" style="--bg-image: url('https://benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png');">
+    <img src="https://benmack.github.io/img/blog/2020-01-06-1_federsee-blog-series_part-3_clf/output_30_0.png" alt="output_30_0.png">
+  </a>
+        <header>
+          <h2><a href="/blog/2020-01-06-1_federsee-blog-series_part-3_clf/">Satellite imagery classification - III</a></h2>
+          <time class="published" datetime="2020-01-06 00:00:00 &#43;0000 UTC">January 6, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2019-10-26-1_federsee-blog-series_part-2_osm/" class="image" style="--bg-image: url('https://benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png');">
+    <img src="https://benmack.github.io/img/blog/2019-10-26-1_federsee-blog-series_part-2_osm/output_39_0.png" alt="output_39_0.png">
+  </a>
+        <header>
+          <h2><a href="/blog/2019-10-26-1_federsee-blog-series_part-2_osm/">Satellite imagery classification - II</a></h2>
+          <time class="published" datetime="2019-10-26 00:00:00 &#43;0000 UTC">October 26, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2019-09-29-1_federsee-blog-series_part-1_cog/" class="image" style="--bg-image: url('https://benmack.github.io/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png');">
+    <img class="stretchV" src="https://benmack.github.io/img/blog/2019-09-29-1_federsee-blog-series_part-1_cog/output_26_0.png" alt="output_26_0.png">
+  </a>
+        <header>
+          <h2><a href="/blog/2019-09-29-1_federsee-blog-series_part-1_cog/">Satellite imagery classification - I</a></h2>
+          <time class="published" datetime="2019-09-29 00:00:00 &#43;0000 UTC">September 29, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/2019-09-28-1_yay/" class="image" style="--bg-image: url('https://benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG');">
+    <img src="https://benmack.github.io/img/misc/2017-06-26_bike_4000x1250.JPG" alt="2017-06-26_bike_4000x1250.JPG">
+  </a>
+        <header>
+          <h2><a href="/blog/2019-09-28-1_yay/">YAY...</a></h2>
+          <time class="published" datetime="2019-09-28 00:00:00 &#43;0000 UTC">September 28, 2019</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">See More</a>
+        </footer>
+      
+    </section>
+  
+
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>About</h1>
+      </header>
+      <p>Mini Autobiography</p>
+      <footer>
+        <a href="/about" class="button">Learn More</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/benmack" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/ben-mack" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//researchgate.net/profile/Benjamin_Mack2" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+
+
+<li><a href="mailto:ben8mack@gmail.com" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 Ben&#39;s Blog
+      <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.68.3' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

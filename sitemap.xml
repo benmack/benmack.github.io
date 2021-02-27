@@ -4,21 +4,26 @@
   
   <url>
     <loc>https://benmack.github.io/blog/</loc>
-    <lastmod>2020-01-06T00:00:00+00:00</lastmod>
+    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://benmack.github.io/categories/</loc>
-    <lastmod>2020-01-06T00:00:00+00:00</lastmod>
+    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://benmack.github.io/categories/eobox/</loc>
-    <lastmod>2020-01-06T00:00:00+00:00</lastmod>
+    <loc>https://benmack.github.io/blog/2021-02-27-1_comparing_usgs_shakemap_versions/</loc>
+    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://benmack.github.io/categories/python/</loc>
+    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://benmack.github.io/categories/eobox/</loc>
     <lastmod>2020-01-06T00:00:00+00:00</lastmod>
   </url>
   

@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Comparing USGS ShakeMap versions</title>
+      <link>https://benmack.github.io/blog/2021-02-27-1_comparing_usgs_shakemap_versions/</link>
+      <pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://benmack.github.io/blog/2021-02-27-1_comparing_usgs_shakemap_versions/</guid>
+      <description>Overview Recently, I came across the question if and how it is possible to download superseded versions of ShakeMaps distributed by the USGS Earthquake Hazards program. This post comprises what I encountered on my first walk through the rich resources offered by the USGS.
+In a nutshell, we will
+ use the libcomcat Python library to  query the history of product submissions (e.g. ShakeMaps) related to an event download different versions of a product (here the raster.</description>
+    </item>
+    
+    <item>
       <title>Satellite imagery classification - III</title>
       <link>https://benmack.github.io/blog/2020-01-06-1_federsee-blog-series_part-3_clf/</link>
       <pubDate>Mon, 06 Jan 2020 00:00:00 +0000</pubDate>
